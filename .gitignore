@@ -1,3 +1,9 @@
+# Macbook files
+.DS_Store
+
+# Data files (they're yuge)
+/data
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
