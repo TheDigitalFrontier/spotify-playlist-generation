@@ -13,34 +13,6 @@
 
 # Preparing and Enriching the Million Playlist Dataset
 
-
-```python
-import time
-import math
-import pickle
-import numpy as np
-import pandas as pd
-
-import matplotlib.pyplot as plt
-import seaborn as sns
-from pandas.plotting import scatter_matrix
-
-from os import listdir
-from os.path import isfile, join
-sns.set()
-
-from itertools import chain
-
-import spotipy
-from spotipy.oauth2 import SpotifyClientCredentials 
-
-client_id = ""
-client_secret = ""
-
-client_credentials_manager = SpotifyClientCredentials(client_id=client_id, client_secret=client_secret)
-sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
-```
-
 ## Data Source
 
 We began our work with the Million Playlist Dataset. This data set was prepared as part of the [RecSys Challenge 2018](https://recsys-challenge.spotify.com/) organized by Spotify, University of Massachusetts (Amherst), and Johannes Kepler University (Linz).
@@ -64,14 +36,6 @@ The initial provided data features include:
 - **Duration:** integer value in milliseconds
 
 Here is a sample of the provided data.
-
-
-```python
-# display a sample CSV file
-df = pd.read_csv('../data/Songs/songs285.csv')
-print("Shape of data in CSV file:", df.shape)
-display(df.head())
-```
 
     Shape of data in CSV file: (64928, 9)
 
@@ -172,12 +136,6 @@ display(df.head())
 </div>
 
 
-
-```python
-all_files = listdir('../data/Songs')
-print("Number of CSV files:", len(all_files))
-```
-
     Number of CSV files: 1000
 
 
@@ -194,167 +152,7 @@ From this exercise, we output two data frames:
 
 Because of the scale of the data, we perform this exercise twice: once on a subset of 200,000 random playlists and once on the entire Million Playlist Dataset. Running this over the entire dataset has a run-time of 2.5 hours.
 
-
-```python
-# Looping over 200,000 random playlists to fill out a master Pandas dataframe for songs and a Pandas series for playlists
-
-start_time = time.time()
-loop_start = time.time()
-
-# List of all files
-all_files = listdir('../data/Songs')
-# 200,000 playlists is plenty
-all_files = all_files[0:200]
-
-# Load first file to get columns (standard across all)
-df = pd.read_csv('../data/Songs/' + all_files[0])
-
-# Master DataFrame of all unique songs included across all playlists
-#songs = pd.DataFrame(columns = list(df.columns)[2:])
-songs = pd.DataFrame()
-
-# Master Series of playlists and the songs included in each
-playlists = pd.Series()
-
-# Aggregator functions to limit to one row per song and count occurrences across playlists
-a1 = dict()
-for key in df.columns[2:]:
-    a1[key] = 'first'
-a1['track_uri'] = 'count'
-
-# Aggregator to consolidate into sum of songs across playlists
-a2= dict()
-for key in df.columns[2:]:
-    a2[key] = 'first'
-del a2['track_uri']
-a2['count'] = 'sum'
-
-# Loop over each file to extract data
-for i, file in enumerate(all_files):
-    # split on "." to split into "filename" and "csv"
-    # Then select "filename" and ditch the first five letters "songs"
-    filenum = file.split(".")[0][5:]
-    
-    # Load file and store in temporary dataframe
-    fdf = pd.read_csv('../data/Songs/' + file)
-    
-    # --- SONGS IN FILE ---
-    fdf_counts = fdf.iloc[:, 2:]
-    fdf_counts = fdf_counts.groupby('track_uri').agg(a1)
-    fdf_counts.rename(columns = {'track_uri': 'count'}, inplace = True)
-    
-    # Add to df of unique songs, update counters, and remove duplicates
-    songs = songs.append(fdf_counts)
-    
-    # -- SONGS IN EACH PLAYLIST --
-    # Songs included in every playlist (ordered) in file
-    # For each playlist, get list of track_uri's (unique identifiers)
-    songs_in_playlist = fdf.groupby('pid')['track_uri'].unique()
-
-    # Update index to be not the pid in file (id), but a combination of them
-    #songs_in_playlist.index = [filenum + '_' + str(pid) for pid in songs_in_playlist.index.values]
-    songs_in_playlist.index = list(map(lambda x: filenum + '_' + str(x), songs_in_playlist.index.values))
-    
-    # Add playlists to master Series of all playlists
-    playlists = playlists.append(songs_in_playlist)
-    
-    # Every 50 files, consolidate the songs table so it doesn't grow too big
-    if (i+1)%25 == 0: 
-        print('{}/{} -- {} s'.format(i+1, len(all_files), time.time() - loop_start))
-        loop_start = time.time()
-        songs = songs.groupby('track_uri').agg(a2, sort = True)
-        print('   Consolidation: {} s'.format(time.time() - loop_start))
-    
-print("--- %s seconds ---" % (time.time() - start_time))
-```
-
-
-```python
-# Looping over all files to fill out a master Pandas dataframe for songs and a Pandas series for playlists
-
-start_time = time.time()
-loop_start = time.time()
-
-# List of all files
-all_files = listdir('../data/Songs')
-# Limit to some of the playlists
-#all_files = all_files[0:200]
-
-# Load first file to get columns (standard across all)
-df = pd.read_csv('../data/Songs/' + all_files[0])
-
-# Master DataFrame of all unique songs included across all playlists
-#songs = pd.DataFrame(columns = list(df.columns)[2:])
-songs = pd.DataFrame()
-
-# Master Series of playlists and the songs included in each
-playlists = pd.Series()
-
-# Aggregator functions to limit to one row per song and count occurrences across playlists
-a1 = dict()
-for key in df.columns[2:]:
-    a1[key] = 'first'
-a1['track_uri'] = 'count'
-
-# Aggregator to consolidate into sum of songs across playlists
-a2= dict()
-for key in df.columns[2:]:
-    a2[key] = 'first'
-del a2['track_uri']
-a2['count'] = 'sum'
-
-# Loop over each file to extract data
-for i, file in enumerate(all_files):
-    # split on "." to split into "filename" and "csv"
-    # Then select "filename" and ditch the first five letters "songs"
-    filenum = file.split(".")[0][5:]
-    
-    # Load file and store in temporary dataframe
-    fdf = pd.read_csv('../data/Songs/' + file)
-    
-    # --- SONGS IN FILE ---
-    fdf_counts = fdf.iloc[:, 2:]
-    fdf_counts = fdf_counts.groupby('track_uri').agg(a1)
-    fdf_counts.rename(columns = {'track_uri': 'count'}, inplace = True)
-    
-    # Add to df of unique songs, update counters, and remove duplicates
-    songs = songs.append(fdf_counts)
-    
-    # -- SONGS IN EACH PLAYLIST --
-    # Songs included in every playlist (ordered) in file
-    # For each playlist, get list of track_uri's (unique identifiers)
-    songs_in_playlist = fdf.groupby('pid')['track_uri'].unique()
-
-    # Update index to be not the pid in file (id), but a combination of them
-    #songs_in_playlist.index = [filenum + '_' + str(pid) for pid in songs_in_playlist.index.values]
-    songs_in_playlist.index = list(map(lambda x: filenum + '_' + str(x), songs_in_playlist.index.values))
-    
-    # Add playlists to master Series of all playlists
-    playlists = playlists.append(songs_in_playlist)
-    
-    # Every 50 files, consolidate the songs table so it doesn't grow too big
-    if (i+1)%25 == 0: 
-        print('{}/{} -- {} s'.format(i+1, len(all_files), time.time() - loop_start))
-        loop_start = time.time()
-        songs = songs.groupby('track_uri').agg(a2, sort = True)
-        print('   Consolidation: {} s'.format(time.time() - loop_start))
-    
-print("--- %s seconds ---" % (time.time() - start_time))
-```
-
 Once we have our master dataframe with all unique songs, we can assign an ID to each song, which we do as a new column at the end of the below dataframe labeled `song_id`.
-
-
-```python
-# Do a final consolidation and add song ID to table
-start_time = time.time()
-songs_counts = songs.groupby('track_uri').agg(a2)
-songs_counts['song_id'] = np.arange(len(songs_counts))
-print("--- %s seconds ---" % (time.time() - start_time))
-
-print(songs_counts.shape)
-display(songs_counts.head())
-```
 
     --- 7.567456960678101 seconds ---
     (1003760, 8)
@@ -463,32 +261,6 @@ display(songs_counts.head())
 
 With our generated `song_id`, we replace the `track_uri` in each playlist and switch `song_id` to become the new index column. This allows us to make faster lookups using `song_id` in our future work. We conclude by saving our transformed data into pickle files, which provides faster and more compact files for checkpoint saving.
 
-
-```python
-# Replace playlist track_uri with song_id
-
-start_time = time.time()
-loop_start = time.time()
-
-playlists_songids = pd.Series(index = playlists.index)
-playlists_songids = playlists_songids.astype(object)
-
-i = 0
-for ind, row in playlists.items():
-    songids = np.array(songs_counts.loc[row, 'song_id'], 'int')
-    playlists_songids.loc[str(ind)] = songids
-    
-    i += 1
-    if i % (len(playlists)/20) == 0 == 0: 
-        print('{}/{} -- {} s'.format(i, int(len(playlists)), time.time() - loop_start))
-        loop_start = time.time()
-    
-print("--- %s seconds ---" % (time.time() - start_time))
-
-print(playlists_songids.shape)
-print(playlists_songids.head())
-```
-
     10000/200000 -- 38.7440550327301 s
     20000/200000 -- 43.11882281303406 s
     30000/200000 -- 44.18085217475891 s
@@ -518,17 +290,6 @@ print(playlists_songids.head())
     284_4    [576080, 600, 170841, 842370, 450149, 8624, 89...
     dtype: object
 
-
-
-```python
-# Change songs table to have song_id as index and track_uri as column
-# We will be doing lookups on song_id while running
-
-songs_counts_id = songs_counts.copy()
-songs_counts_id['track_uri'] = songs_counts_id.index.values
-songs_counts_id.set_index('song_id', inplace = True)
-songs_counts_id.head()
-```
 
 
 
@@ -634,17 +395,6 @@ songs_counts_id.head()
 
 
 
-
-```python
-# Save data as CSV and PKL files
-
-songs_counts_id.to_csv('../data/songs_counts_'+str(len(all_files))+'.csv')
-songs_counts_id.to_pickle('../data/songs_counts_'+str(len(all_files))+'.pkl')
-
-playlists_songids.to_csv('../data/playlists_song_ids_'+str(len(all_files))+'.csv', header = False)
-playlists_songids.to_pickle('../data/playlists_song_ids_'+str(len(all_files))+'.pkl')
-```
-
 ## Enriching a Song's Musical Features
 
 Our recommendation hypothesis is that song features provide a data-based way of determining similarity and thus good matches to our seed songs. We leverage Spotify's open API to retrieve this musical features and enrich it into our dataset.
@@ -674,145 +424,9 @@ To keep Spotify API requests reasonable, we randomly selected 200,000 playlists 
 - **album_popularity:** The popularity of the album. The value will be between 0 and 100, with 100 being the most popular. The popularity is calculated from the popularity of the album’s individual tracks.
 - **release_date:** The date the album was first released. 
 
-
-```python
-# Enrich data with new track features from Spotify API
-
-# read songs table
-df = pd.read_pickle('../data/songs_counts_200.pkl')
-
-# define batches
-batch_size = 100
-num_batches = math.ceil(len(df)/batch_size)
-
-# initialize list to save API calls
-track_features = []
-
-start_time = time.time()
-
-# looping through the batches
-for i in range(num_batches):
-    
-    
-    # define start and end of the batch
-    start_point = i*batch_size
-    end_point = min(start_point + batch_size, len(df))
-    
-    # API call
-    track_list = list(df['track_uri'][start_point:end_point])
-    track_features.extend(sp.audio_features(track_list))
-
-    if i%100 == 0:
-        print('{}/{}, {}s'.format(i, num_batches, time.time()-start_time))
-        start_time = time.time()
-
-# convert to dataframe
-track_features_df = pd.DataFrame(track_features)
-
-# save data
-track_features_df.to_csv('../data/track_features.csv')
-track_features_df.to_pickle('../data/track_features.pkl')
-```
-
-
-```python
-# Enrich data with new artist features from Spotify API
-
-# identify unique artists
-unique_artists = list(df['artist_uri'].unique())
-
-# define batches
-batch_size = 50
-num_batches = math.ceil(len(unique_artists)/batch_size)
-
-# initialize list to save API calls
-artist_info = []
-
-start_time = time.time()
-
-# looping through the batches
-for i in range(num_batches):
-    
-    
-    # define start and end of the batch
-    start_point = i*batch_size
-    end_point = min(start_point + batch_size, len(df))
-    
-    # API call
-    artist_list = unique_artists[start_point:end_point]
-    artist_info.extend(sp.artists(artist_list)['artists'])
-
-    if i%100 == 0:
-        print('{}/{}, {}s'.format(i, num_batches, time.time()-start_time))
-        start_time = time.time()
-
-# convert to dataframe
-artist_info_df = pd.DataFrame(artist_info)
-
-# save data
-artist_info_df.to_csv('../data/artist_info.csv')
-artist_info_df.to_pickle('../data/artist_info.pkl')
-```
-
-
-```python
-# Enrich data with new album features from Spotify API
-
-# identify unique albums
-unique_albums = list(df['album_uri'].unique())
-
-# define batches
-batch_size = 20
-num_batches = math.ceil(len(unique_albums)/batch_size)
-
-# initialize list to save API calls
-album_info = []
-
-start_time = time.time()
-
-# looping through the batches
-for i in range(num_batches):
-    
-    
-    # define start and end of the batch
-    start_point = i*batch_size
-    end_point = min(start_point + batch_size, len(df))
-    
-    # API call
-    album_list = unique_albums[start_point:end_point]
-    album_info.extend(sp.albums(album_list)['albums'])
-
-    if i%100 == 0:
-        print('{}/{}, {}s'.format(i, num_batches, time.time()-start_time))
-        start_time = time.time()
-        
-# eliminates none values
-album_info = [i for i in album_info if i is not None]
-
-# convert to dataframe
-album_info_df = pd.DataFrame(album_info)
-
-# save data
-album_info_df.to_csv('../data/album_info.csv')
-album_info_df.to_pickle('../data/album_info.pkl')
-```
-
 After pulling data from the Spotify API, we have a dataset of 999,950 unique songs and their associated metadata. We join our retrieved features back into the master tables below.
 
 #### Enriched Master Tracks
-
-
-```python
-# import data
-track_columns = ['danceability','energy','key','loudness','mode','speechiness','acousticness','instrumentalness','liveness','valence','tempo','time_signature','uri']
-tracks = pd.read_csv('../data/track_features3.csv', usecols=track_columns)
-
-# rename columns for clarity
-tracks = tracks.rename(columns={'uri': 'track_uri'})
-tracks = tracks.drop_duplicates()
-
-tracks
-```
 
 
 
@@ -1037,19 +651,6 @@ tracks
 #### Enriched Master Artists
 
 
-```python
-# import data
-artist_columns = ['genres','popularity','uri']
-artists = pd.read_csv('../data/artist_info1.csv', usecols=artist_columns)
-
-# rename columns for clarity
-artists = artists.rename(columns={'genres': 'artist_genres', 'popularity': 'artist_popularity', 'uri': 'artist_uri'})
-artists = artists.drop_duplicates()
-
-artists
-```
-
-
 
 
 <div>
@@ -1150,26 +751,6 @@ artists
 
 
 #### Enriched Master Albums
-
-
-```python
-# import data
-album_columns = ['genres','popularity','release_date','uri']
-
-albums1 = pd.read_csv('../data/album_info1.csv', usecols=album_columns)
-albums2 = pd.read_csv('../data/album_info2.csv', usecols=album_columns)
-albums3 = pd.read_csv('../data/album_info3.csv', usecols=album_columns)
-albums4 = pd.read_csv('../data/album_info4.csv', usecols=album_columns)
-albums5 = pd.read_csv('../data/album_info5.csv', usecols=album_columns)
-albums6 = pd.read_csv('../data/album_info6.csv', usecols=album_columns)
-albums = pd.concat([albums1, albums2, albums3, albums4, albums5, albums6], axis=0, ignore_index=True)
-
-# rename columns for clarity
-albums = albums.rename(columns={'genres': 'album_genres', 'popularity': 'album_popularity', 'release_date': 'album_release_date', 'uri': 'album_uri'})
-albums = albums.drop_duplicates()
-
-albums
-```
 
 
 
@@ -1284,13 +865,6 @@ albums
 
 
 #### Enriched Master Songs
-
-
-```python
-master = pd.read_pickle('../data/songs_counts_200.pkl')
-master['song_id'] = master.index
-master
-```
 
 
 
@@ -1475,15 +1049,6 @@ master
 </div>
 
 
-
-
-```python
-master = master.merge(track_features, on='track_uri', suffixes=(None, '_tracks'))
-master = master.merge(artists, on='artist_uri', suffixes=(None, '_artists'))
-master = master.merge(albums, on='album_uri', suffixes=(None, '_albums'))
-master = master.set_index('song_id')
-master
-```
 
 
 
@@ -1824,9 +1389,3 @@ master
 </div>
 
 
-
-
-```python
-master.to_csv('../data/master200.csv')
-master.to_pickle('../data/master200.pkl')
-```
