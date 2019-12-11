@@ -13252,56 +13252,6 @@ div#notebook {
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Playlists vary widely in the number of songs present on each.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[5]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>pid
-10     22
-11     63
-12    212
-13     12
-14     11
-15     25
-16     96
-17     24
-18      9
-19    165
-Name: track_uri, dtype: int64</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>As expected, we begin with 1,000 CSV files to start our analysis.</p>
-
-</div>
-</div>
-</div>
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -13326,6 +13276,14 @@ Name: track_uri, dtype: int64</pre>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<p>Having 1,000 CSV files presents serious computational challenges that could have forced us to use a tiny subset of available playlists during our exploration and modeling phases.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Data-Structuring">Data Structuring<a class="anchor-link" href="#Data-Structuring">&#182;</a></h2><p>For songs that appear in multiple playlists, data in each of the columns are repeated. A reasonable first step to slim down the size of the dataset without losing information or fidelity is to parse through all the files to create a reference table of all songs and their metadata. Each playlist can then be stored as a simple named object, where the name is the ID of the playlist and its value a vector of song IDs.</p>
 <p>From this exercise, we output two data frames:</p>
 <ul>
@@ -13339,196 +13297,8 @@ Name: track_uri, dtype: int64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>25/200 -- 28.84281301498413 s
-   Consolidation: 2.741060733795166 s
-</pre>
-</div>
-</div>
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>//anaconda3/envs/ac209a/lib/python3.7/site-packages/pandas/core/frame.py:7123: FutureWarning: Sorting because non-concatenation axis is not aligned. A future version
-of pandas will change to not sort by default.
-
-To accept the future behavior, pass &#39;sort=False&#39;.
-
-To retain the current behavior and silence the warning, pass &#39;sort=True&#39;.
-
-  sort=sort,
-</pre>
-</div>
-</div>
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>50/200 -- 47.54296398162842 s
-   Consolidation: 4.794252872467041 s
-75/200 -- 51.14710998535156 s
-   Consolidation: 5.952292203903198 s
-100/200 -- 61.163079023361206 s
-   Consolidation: 7.0074687004089355 s
-125/200 -- 70.34738993644714 s
-   Consolidation: 9.418751001358032 s
-150/200 -- 75.32100200653076 s
-   Consolidation: 8.680530071258545 s
-175/200 -- 80.10952401161194 s
-   Consolidation: 10.126471281051636 s
-200/200 -- 83.53081130981445 s
-   Consolidation: 10.37688398361206 s
---- 508.3829379081726 seconds ---
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>25/1000 -- 27.366091012954712 s
-   Consolidation: 3.045917272567749 s
-</pre>
-</div>
-</div>
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>//anaconda3/envs/ac209a/lib/python3.7/site-packages/pandas/core/frame.py:7123: FutureWarning: Sorting because non-concatenation axis is not aligned. A future version
-of pandas will change to not sort by default.
-
-To accept the future behavior, pass &#39;sort=False&#39;.
-
-To retain the current behavior and silence the warning, pass &#39;sort=True&#39;.
-
-  sort=sort,
-</pre>
-</div>
-</div>
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>50/1000 -- 45.434144020080566 s
-   Consolidation: 5.051048994064331 s
-75/1000 -- 58.47398400306702 s
-   Consolidation: 6.09772515296936 s
-100/1000 -- 69.52241206169128 s
-   Consolidation: 7.910443067550659 s
-125/1000 -- 73.77834796905518 s
-   Consolidation: 8.910668134689331 s
-150/1000 -- 76.7184042930603 s
-   Consolidation: 8.3334059715271 s
-175/1000 -- 77.8903558254242 s
-   Consolidation: 10.934021949768066 s
-200/1000 -- 81.73972201347351 s
-   Consolidation: 10.62891697883606 s
-225/1000 -- 86.98233485221863 s
-   Consolidation: 11.32219123840332 s
-250/1000 -- 88.56120204925537 s
-   Consolidation: 10.380228996276855 s
-275/1000 -- 91.60101199150085 s
-   Consolidation: 11.818976879119873 s
-300/1000 -- 97.27157711982727 s
-   Consolidation: 13.4116051197052 s
-325/1000 -- 100.56316900253296 s
-   Consolidation: 14.040070056915283 s
-350/1000 -- 108.0798499584198 s
-   Consolidation: 14.448730945587158 s
-375/1000 -- 1242.5574660301208 s
-   Consolidation: 578.487918138504 s
-400/1000 -- 763.65207695961 s
-   Consolidation: 16.44511103630066 s
-425/1000 -- 121.96080088615417 s
-   Consolidation: 18.315109252929688 s
-450/1000 -- 151.60880208015442 s
-   Consolidation: 19.32286286354065 s
-475/1000 -- 150.98800802230835 s
-   Consolidation: 17.521432161331177 s
-500/1000 -- 154.2672598361969 s
-   Consolidation: 20.0655198097229 s
-525/1000 -- 163.5151298046112 s
-   Consolidation: 22.2984037399292 s
-550/1000 -- 163.79764676094055 s
-   Consolidation: 21.844709157943726 s
-575/1000 -- 164.91389203071594 s
-   Consolidation: 21.997164726257324 s
-600/1000 -- 164.94356989860535 s
-   Consolidation: 21.193975925445557 s
-625/1000 -- 166.22549390792847 s
-   Consolidation: 23.20260214805603 s
-650/1000 -- 171.41728711128235 s
-   Consolidation: 25.095941066741943 s
-675/1000 -- 178.72356700897217 s
-   Consolidation: 22.256847858428955 s
-700/1000 -- 184.88974380493164 s
-   Consolidation: 26.209995985031128 s
-725/1000 -- 186.0280818939209 s
-   Consolidation: 24.479076147079468 s
-750/1000 -- 199.64106917381287 s
-   Consolidation: 27.65399718284607 s
-775/1000 -- 197.46517896652222 s
-   Consolidation: 26.347388982772827 s
-800/1000 -- 201.13336396217346 s
-   Consolidation: 25.958865880966187 s
-825/1000 -- 198.1163649559021 s
-   Consolidation: 28.02202081680298 s
-850/1000 -- 235.31651997566223 s
-   Consolidation: 42.38566207885742 s
-875/1000 -- 287.1188852787018 s
-   Consolidation: 28.613805055618286 s
-900/1000 -- 565.000883102417 s
-   Consolidation: 28.413723945617676 s
-925/1000 -- 211.80340790748596 s
-   Consolidation: 27.453747034072876 s
-950/1000 -- 242.3471748828888 s
-   Consolidation: 29.649797677993774 s
-975/1000 -- 261.1695318222046 s
-   Consolidation: 33.72169303894043 s
-1000/1000 -- 238.68519496917725 s
-   Consolidation: 35.65996789932251 s
---- 8087.0120759010315 seconds ---
-</pre>
-</div>
-</div>
-
-</div>
-</div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
