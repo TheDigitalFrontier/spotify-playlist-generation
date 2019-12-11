@@ -5,7 +5,7 @@
 <a href="https://wfseaton.github.io/TheDigitalFrontier/dimensionality_reduction.html">Dimensionality Reduction</a> - 
 <a href="https://wfseaton.github.io/TheDigitalFrontier/clustering_techniques.html">Clustering Techniques</a> - 
 <a href="https://wfseaton.github.io/TheDigitalFrontier/playlist_generation.html">Playlist Generation</a> - 
-<a href="https://wfseaton.github.io/TheDigitalFrontier/conclusion.html">Conclusion</a>
+<a href="https://wfseaton.github.io/TheDigitalFrontier/conclusion.html">Conclusion and Further Expansions</a>
 
 
 The past decade has seen the music industry undergo the biggest structural change since the launch of the mp3 and individual track purchases by Apple in 2003. Driving this change has been the Swedish company Spotify, launched in 2008 and today serving 50 million songs to 248 million monthly users. Streaming enables users to listen to any song they want for a flat subscription fee. With the explosion in access the average listener has to more music has come a rise in the demand for recommendation algorithms, ways of cutting through the noise and delivering just the right song at the right time. Many companies such as SoundCloud, 8tracks, Stereomood and LastFM have expertly developed algorithms but Spotify is still pushing the category forward. Its Discover Weekly playlist recommends newly released music each user might like based on their listening preferences. Its Year In Review has become an annual cultural moment, summarizing each user's listening history and top songs of the past year. To stay ahead, Spotify has developed an open API that developers can use to access musical features about songs provided through their library.
