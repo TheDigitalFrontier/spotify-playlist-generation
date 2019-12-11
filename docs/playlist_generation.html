@@ -13077,6 +13077,16 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<hr>
+<h2><span style="color:blue">[Introduction and Data Preparation](https://wfseaton.github.io/TheDigitalFrontier/Intro%20&%20data%20prep.html)</span></h2>
+<h2 id="[Exploratory-Data-Analysis](https://wfseaton.github.io/TheDigitalFrontier/EDA.html)"><span style="color:blue">[Exploratory Data Analysis](https://wfseaton.github.io/TheDigitalFrontier/EDA.html)</span><a class="anchor-link" href="#[Exploratory-Data-Analysis](https://wfseaton.github.io/TheDigitalFrontier/EDA.html)">&#182;</a></h2><h2 id="[Dimensionality-Reduction](https://wfseaton.github.io/TheDigitalFrontier/3.%20Dimensionality%20Reduction.html)"><span style="color:blue">[Dimensionality Reduction](https://wfseaton.github.io/TheDigitalFrontier/3.%20Dimensionality%20Reduction.html)</span><a class="anchor-link" href="#[Dimensionality-Reduction](https://wfseaton.github.io/TheDigitalFrontier/3.%20Dimensionality%20Reduction.html)">&#182;</a></h2><h2 id="[Clustering-Techniques](https://wfseaton.github.io/TheDigitalFrontier/clustering.html)"><span style="color:blue">[Clustering Techniques](https://wfseaton.github.io/TheDigitalFrontier/clustering.html)</span><a class="anchor-link" href="#[Clustering-Techniques](https://wfseaton.github.io/TheDigitalFrontier/clustering.html)">&#182;</a></h2><h2 id="[Playlist-Generation](https://wfseaton.github.io/TheDigitalFrontier/playlist_generation.html)"><span style="color:blue">[Playlist Generation](https://wfseaton.github.io/TheDigitalFrontier/playlist_generation.html)</span><a class="anchor-link" href="#[Playlist-Generation](https://wfseaton.github.io/TheDigitalFrontier/playlist_generation.html)">&#182;</a></h2><p><span style="color:blue">[Conclusion](https://wfseaton.github.io/TheDigitalFrontier/conclusion.html)</span></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Generating-a-Cold-Start-Playlist">Generating a Cold-Start Playlist<a class="anchor-link" href="#Generating-a-Cold-Start-Playlist">&#182;</a></h1><p>After dimension reductionality and testing multiple different clustering mechanisms, we move to the challenge of generating and assessing our own playlist from a small selection of seed songs.</p>
 <p>We focused on using continuous features of each song (tempo, danceability, etc.) passed through dimensionality reduction and grouped using K-Means relative clustering. After arriving at a set of workable clusters for song selection, we then seed our generated playlist with a handful of manually selected songs. Our algorithm will take each seed song, identify the cluster that it belongs to and select a song from that cluster using a representative derived distance metric. It will repeat this until the desired song count has been reached.</p>
 

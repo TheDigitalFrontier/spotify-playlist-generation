@@ -11,7 +11,6 @@
 [Playlist Generation](https://wfseaton.github.io/TheDigitalFrontier/playlist_generation.html)
 ---
 [Conclusion](https://wfseaton.github.io/TheDigitalFrontier/conclusion.html)
----
 
 The Grid.<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A digital frontier.<br>
