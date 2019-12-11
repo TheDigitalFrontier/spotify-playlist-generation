@@ -1,16 +1,17 @@
 ## Welcome to the Digital Frontier
 
-[Introduction and Data Preparation](https://wfseaton.github.io/TheDigitalFrontier/Intro%20&%20data%20prep.html)
 ---
-[Exploratory Data Analysis](https://wfseaton.github.io/TheDigitalFrontier/EDA.html)
+<span style="color:blue">[Introduction and Data Preparation](https://wfseaton.github.io/TheDigitalFrontier/Intro%20&%20data%20prep.html)</span>
 ---
-[Dimensionality Reduction](https://wfseaton.github.io/TheDigitalFrontier/3.%20Dimensionality%20Reduction.html)
+<span style="color:blue">[Exploratory Data Analysis](https://wfseaton.github.io/TheDigitalFrontier/EDA.html)</span>
 ---
-[Clustering Techniques](https://wfseaton.github.io/TheDigitalFrontier/clustering.html)
+<span style="color:blue">[Dimensionality Reduction](https://wfseaton.github.io/TheDigitalFrontier/3.%20Dimensionality%20Reduction.html)</span>
 ---
-[Playlist Generation](https://wfseaton.github.io/TheDigitalFrontier/playlist_generation.html)
+<span style="color:blue">[Clustering Techniques](https://wfseaton.github.io/TheDigitalFrontier/clustering.html)</span>
 ---
-[Conclusion](https://wfseaton.github.io/TheDigitalFrontier/conclusion.html)
+<span style="color:blue">[Playlist Generation](https://wfseaton.github.io/TheDigitalFrontier/playlist_generation.html)</span>
+---
+<span style="color:blue">[Conclusion](https://wfseaton.github.io/TheDigitalFrontier/conclusion.html)</span>
 ---
 
 The Grid.<br>
