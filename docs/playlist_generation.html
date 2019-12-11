@@ -13097,48 +13097,6 @@ div#notebook {
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">Function to generate a new playlist based on a set of starting songs.</span>
-<span class="sd">Returns the list of song IDs in the generated playlist, including those of the seed songs.</span>
-<span class="sd">Requires a fitted clusterer with which to predict the label of seed songs and pull from set.</span>
-<span class="sd">&#39;&#39;&#39;</span>
-<span class="k">def</span> <span class="nf">generate_playlist</span><span class="p">(</span><span class="n">seed_song_ids</span><span class="p">,</span> <span class="n">playlist_length</span><span class="p">,</span> <span class="n">clusterer</span><span class="p">):</span>
-    <span class="c1"># Start with seed songs, those are included too</span>
-    <span class="n">new_song_ids</span> <span class="o">=</span> <span class="n">seed_song_ids</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-
-    <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_song_ids</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">playlist_length</span><span class="p">:</span>
-        <span class="c1"># Pick a seed song at random</span>
-        <span class="n">seed_id</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">seed_song_ids</span><span class="p">)</span>
-        <span class="c1"># Find index in dataset of seed song</span>
-        <span class="n">seed_ind</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">song_ids</span> <span class="o">==</span> <span class="n">seed_id</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-        <span class="c1"># Predict cluster of seed song</span>
-        <span class="n">seed_clust</span> <span class="o">=</span> <span class="n">clusterer</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">encoded_cont</span><span class="p">[</span><span class="n">seed_ind</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)))[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="c1"># Get indices of all songs in that cluster</span>
-        <span class="n">clust_inds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">clusterer</span><span class="o">.</span><span class="n">labels_</span> <span class="o">==</span> <span class="n">seed_clust</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,))</span>
-        <span class="c1"># Calculate playlist co-occurrence cosine distance between seed and all songs in same cluster</span>
-        <span class="n">clust_seed_dist</span> <span class="o">=</span> <span class="n">cosine_distances</span><span class="p">(</span><span class="n">indicators</span><span class="p">[</span><span class="n">clust_inds</span><span class="p">],</span> <span class="n">indicators</span><span class="p">[</span><span class="n">seed_ind</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,))</span>
-        <span class="c1"># Sort indices of songs by distance to seed (co-occurrence)</span>
-        <span class="n">closest_songs_ind</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">clust_seed_dist</span><span class="p">)</span>
-        <span class="c1"># Get the song IDs corresponding to those songs</span>
-        <span class="n">closest_songs_ids</span> <span class="o">=</span> <span class="n">song_ids</span><span class="p">[</span><span class="n">clust_inds</span><span class="p">][</span><span class="n">closest_songs_ind</span><span class="p">]</span>
-
-        <span class="c1"># Find first of closest songs that is not already in new playlist</span>
-        <span class="c1"># Can stop iterator at playlist length: if true that far, playlist is full anyway</span>
-        <span class="n">closest_songs_in_playlist</span> <span class="o">=</span> <span class="p">[</span><span class="n">sid</span> <span class="ow">in</span> <span class="n">new_song_ids</span> <span class="k">for</span> <span class="n">sid</span> <span class="ow">in</span> <span class="n">closest_songs_ids</span><span class="p">]</span>
-
-        <span class="n">new_song_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">closest_songs_ids</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">closest_songs_in_playlist</span><span class="p">)])</span>
-    
-    <span class="c1"># Return song IDs of generated playlist (including seed songs)</span>
-    <span class="k">return</span> <span class="n">new_song_ids</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
@@ -13158,52 +13116,9 @@ div#notebook {
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
-<span class="kn">from</span> <span class="nn">os</span> <span class="k">import</span> <span class="n">listdir</span>
-<span class="kn">from</span> <span class="nn">os.path</span> <span class="k">import</span> <span class="n">isfile</span><span class="p">,</span> <span class="n">join</span>
-<span class="kn">import</span> <span class="nn">scipy.sparse</span>
-<span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">import</span> <span class="nn">pickle</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
-
-<span class="c1"># Load model:</span>
-<span class="n">kmeans_model</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;../data/kmeans_model.pkl&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">))</span>
-<span class="c1">#flerp.predict(encoded_cont[0:1, :])</span>
-
-<span class="c1"># Load labels:</span>
-<span class="n">labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;../data/kmeans_labels.npy&#39;</span><span class="p">,</span> <span class="n">allow_pickle</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[546]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">p_id</span> <span class="o">=</span> <span class="mi">0</span>
-
-<span class="n">playlist</span> <span class="o">=</span> <span class="n">indicators</span><span class="p">[:,</span> <span class="n">p_id</span><span class="p">]</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,))</span>
-
-<span class="n">playlist_song_ind</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">playlist</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,)))</span>
-
-<span class="n">playlist_song_ids</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">song_ids</span><span class="p">[</span><span class="n">playlist_song_ind</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,)))</span>
-<span class="n">playlist_song_ids</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
 
 <div class="output_wrapper">
 <div class="output">
@@ -13238,17 +13153,6 @@ div#notebook {
 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[547]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">playlist_song_clust</span> <span class="o">=</span> <span class="n">kmeans</span><span class="o">.</span><span class="n">labels_</span><span class="p">[</span><span class="n">playlist_song_ind</span><span class="p">]</span>
-<span class="n">playlist_song_clust</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
 
 <div class="output_wrapper">
 <div class="output">
@@ -13272,30 +13176,9 @@ div#notebook {
 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[550]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">new_playlist</span> <span class="o">=</span> <span class="n">generate_playlist</span><span class="p">(</span><span class="n">playlist_song_ids</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">6</span><span class="p">],</span> <span class="mi">100</span><span class="p">,</span> <span class="n">kmeans</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[536]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Inspect our new playlist</span>
-<span class="n">master</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">new_song_ids</span><span class="p">]</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
 
 <div class="output_wrapper">
 <div class="output">
@@ -13635,72 +13518,9 @@ div#notebook {
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[537]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">new_songs_ind</span> <span class="o">=</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">song_ids</span><span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">sid</span><span class="p">)</span> <span class="k">for</span> <span class="n">sid</span> <span class="ow">in</span> <span class="n">new_playlist</span><span class="p">]</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[538]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
-
-<span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">tsne_results</span><span class="p">[</span><span class="n">tsne_ind</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> 
-    <span class="n">y</span> <span class="o">=</span> <span class="n">tsne_results</span><span class="p">[</span><span class="n">tsne_ind</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
-    <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;grey&#39;</span><span class="p">,</span>
-    <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.05</span>
-<span class="p">)</span>
-
-<span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">tsne_results</span><span class="p">[</span><span class="n">new_songs_ind</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">6</span><span class="p">],</span> <span class="mi">0</span><span class="p">],</span> 
-    <span class="n">y</span> <span class="o">=</span> <span class="n">tsne_results</span><span class="p">[</span><span class="n">new_songs_ind</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">6</span><span class="p">],</span> <span class="mi">1</span><span class="p">],</span>
-    <span class="n">hue</span> <span class="o">=</span> <span class="n">kmeans</span><span class="o">.</span><span class="n">labels_</span><span class="p">[</span><span class="n">new_songs_ind</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">6</span><span class="p">]],</span>
-    <span class="n">palette</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="s2">&quot;hls&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">kmeans</span><span class="o">.</span><span class="n">labels_</span><span class="p">[</span><span class="n">new_songs_ind</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">6</span><span class="p">]])</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,)))),</span>
-    <span class="c1">#edgecolor = &#39;orange&#39;,</span>
-    <span class="n">alpha</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
-    <span class="n">legend</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Seed songs&#39;</span><span class="p">,</span>
-    <span class="n">s</span> <span class="o">=</span> <span class="mi">150</span>
-<span class="p">)</span>
-
-<span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">tsne_results</span><span class="p">[</span><span class="n">new_songs_ind</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> 
-    <span class="n">y</span> <span class="o">=</span> <span class="n">tsne_results</span><span class="p">[</span><span class="n">new_songs_ind</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
-    <span class="n">hue</span> <span class="o">=</span> <span class="n">kmeans</span><span class="o">.</span><span class="n">labels_</span><span class="p">[</span><span class="n">new_songs_ind</span><span class="p">],</span>
-    <span class="n">palette</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="s2">&quot;hls&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">kmeans</span><span class="o">.</span><span class="n">labels_</span><span class="p">[</span><span class="n">new_songs_ind</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,)))),</span>
-    <span class="n">legend</span> <span class="o">=</span> <span class="s2">&quot;full&quot;</span><span class="p">,</span>
-    <span class="n">alpha</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="p">)</span>
-
-<span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">tsne_results</span><span class="p">[</span><span class="n">playlist_song_ind</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> 
-    <span class="n">y</span> <span class="o">=</span> <span class="n">tsne_results</span><span class="p">[</span><span class="n">playlist_song_ind</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
-    <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;orange&#39;</span><span class="p">,</span>
-    <span class="c1">#legend = None,</span>
-    <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Original playlist&#39;</span><span class="p">,</span>
-    <span class="n">alpha</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
-    <span class="n">s</span> <span class="o">=</span> <span class="mi">50</span>
-<span class="p">)</span>
-
-<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Cluster (color) and position of songs in generated playlist vs original and seeds&#39;</span><span class="p">,</span> 
-       <span class="n">xlabel</span> <span class="o">=</span> <span class="s1">&#39;t-SNE 1&#39;</span><span class="p">,</span> <span class="n">ylabel</span> <span class="o">=</span> <span class="s1">&#39;t-SNE 2&#39;</span><span class="p">)</span>
-
-<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;generated_playlist_0.pdf&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()))</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
 
 <div class="output_wrapper">
 <div class="output">
@@ -13736,104 +13556,15 @@ div#notebook {
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[622]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">p_id</span> <span class="o">=</span> <span class="mi">1</span>
-
-<span class="n">playlist</span> <span class="o">=</span> <span class="n">indicators</span><span class="p">[:,</span> <span class="n">p_id</span><span class="p">]</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,))</span>
-
-<span class="n">playlist_song_ind</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">playlist</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,)))</span>
-
-<span class="n">playlist_song_ids</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">song_ids</span><span class="p">[</span><span class="n">playlist_song_ind</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,)))</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[623]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">new_playlist_1</span> <span class="o">=</span> <span class="n">generate_playlist</span><span class="p">(</span><span class="n">playlist_song_ids</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">],</span> <span class="mi">100</span><span class="p">,</span> <span class="n">kmeans</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[624]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">new_songs_ind</span> <span class="o">=</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">song_ids</span><span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">sid</span><span class="p">)</span> <span class="k">for</span> <span class="n">sid</span> <span class="ow">in</span> <span class="n">new_playlist_1</span><span class="p">]</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[625]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
-
-<span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">tsne_results</span><span class="p">[</span><span class="n">tsne_ind</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> 
-    <span class="n">y</span> <span class="o">=</span> <span class="n">tsne_results</span><span class="p">[</span><span class="n">tsne_ind</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
-    <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;grey&#39;</span><span class="p">,</span>
-    <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.05</span>
-<span class="p">)</span>
-
-<span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">tsne_results</span><span class="p">[</span><span class="n">new_songs_ind</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">],</span> <span class="mi">0</span><span class="p">],</span> 
-    <span class="n">y</span> <span class="o">=</span> <span class="n">tsne_results</span><span class="p">[</span><span class="n">new_songs_ind</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">],</span> <span class="mi">1</span><span class="p">],</span>
-    <span class="n">hue</span> <span class="o">=</span> <span class="n">kmeans</span><span class="o">.</span><span class="n">labels_</span><span class="p">[</span><span class="n">new_songs_ind</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">]],</span>
-    <span class="n">palette</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="s2">&quot;hls&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">kmeans</span><span class="o">.</span><span class="n">labels_</span><span class="p">[</span><span class="n">new_songs_ind</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">]])</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,)))),</span>
-    <span class="c1">#edgecolor = &#39;orange&#39;,</span>
-    <span class="n">alpha</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
-    <span class="n">legend</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Seed songs&#39;</span><span class="p">,</span>
-    <span class="n">s</span> <span class="o">=</span> <span class="mi">150</span>
-<span class="p">)</span>
-
-<span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">tsne_results</span><span class="p">[</span><span class="n">new_songs_ind</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> 
-    <span class="n">y</span> <span class="o">=</span> <span class="n">tsne_results</span><span class="p">[</span><span class="n">new_songs_ind</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
-    <span class="n">hue</span> <span class="o">=</span> <span class="n">kmeans</span><span class="o">.</span><span class="n">labels_</span><span class="p">[</span><span class="n">new_songs_ind</span><span class="p">],</span>
-    <span class="n">palette</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="s2">&quot;hls&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">kmeans</span><span class="o">.</span><span class="n">labels_</span><span class="p">[</span><span class="n">new_songs_ind</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,)))),</span>
-    <span class="n">legend</span> <span class="o">=</span> <span class="s2">&quot;full&quot;</span><span class="p">,</span>
-    <span class="n">alpha</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="p">)</span>
-
-<span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">tsne_results</span><span class="p">[</span><span class="n">playlist_song_ind</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> 
-    <span class="n">y</span> <span class="o">=</span> <span class="n">tsne_results</span><span class="p">[</span><span class="n">playlist_song_ind</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
-    <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;orange&#39;</span><span class="p">,</span>
-    <span class="c1">#legend = None,</span>
-    <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Original playlist&#39;</span><span class="p">,</span>
-    <span class="n">alpha</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
-    <span class="n">s</span> <span class="o">=</span> <span class="mi">50</span>
-<span class="p">)</span>
-
-<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Cluster (color) and position of songs in generated playlist vs original and seeds&#39;</span><span class="p">,</span> 
-       <span class="n">xlabel</span> <span class="o">=</span> <span class="s1">&#39;t-SNE 1&#39;</span><span class="p">,</span> <span class="n">ylabel</span> <span class="o">=</span> <span class="s1">&#39;t-SNE 2&#39;</span><span class="p">)</span>
-
-<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;generated_playlist_1.pdf&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()))</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
 
 <div class="output_wrapper">
 <div class="output">
@@ -13870,104 +13601,15 @@ div#notebook {
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[637]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">p_id</span> <span class="o">=</span> <span class="mi">0</span>
-
-<span class="n">playlist</span> <span class="o">=</span> <span class="n">indicators</span><span class="p">[:,</span> <span class="n">p_id</span><span class="p">]</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,))</span>
-
-<span class="n">playlist_song_ind</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">playlist</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,)))</span>
-
-<span class="n">playlist_song_ids</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">song_ids</span><span class="p">[</span><span class="n">playlist_song_ind</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,)))</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[638]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">new_playlist</span> <span class="o">=</span> <span class="n">generate_playlist</span><span class="p">(</span><span class="n">playlist_song_ids</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">],</span> <span class="nb">len</span><span class="p">(</span><span class="n">playlist_song_ids</span><span class="p">),</span> <span class="n">kmeans</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[639]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">new_songs_ind</span> <span class="o">=</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">song_ids</span><span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">sid</span><span class="p">)</span> <span class="k">for</span> <span class="n">sid</span> <span class="ow">in</span> <span class="n">new_playlist</span><span class="p">]</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[640]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
-
-<span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">tsne_results</span><span class="p">[</span><span class="n">tsne_ind</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> 
-    <span class="n">y</span> <span class="o">=</span> <span class="n">tsne_results</span><span class="p">[</span><span class="n">tsne_ind</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
-    <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;grey&#39;</span><span class="p">,</span>
-    <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.05</span>
-<span class="p">)</span>
-
-<span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">tsne_results</span><span class="p">[</span><span class="n">new_songs_ind</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">],</span> <span class="mi">0</span><span class="p">],</span> 
-    <span class="n">y</span> <span class="o">=</span> <span class="n">tsne_results</span><span class="p">[</span><span class="n">new_songs_ind</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">],</span> <span class="mi">1</span><span class="p">],</span>
-    <span class="n">hue</span> <span class="o">=</span> <span class="n">kmeans</span><span class="o">.</span><span class="n">labels_</span><span class="p">[</span><span class="n">new_songs_ind</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">]],</span>
-    <span class="n">palette</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="s2">&quot;hls&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">kmeans</span><span class="o">.</span><span class="n">labels_</span><span class="p">[</span><span class="n">new_songs_ind</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">]])</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,)))),</span>
-    <span class="c1">#edgecolor = &#39;orange&#39;,</span>
-    <span class="n">alpha</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
-    <span class="n">legend</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Seed songs&#39;</span><span class="p">,</span>
-    <span class="n">s</span> <span class="o">=</span> <span class="mi">150</span>
-<span class="p">)</span>
-
-<span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">tsne_results</span><span class="p">[</span><span class="n">new_songs_ind</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> 
-    <span class="n">y</span> <span class="o">=</span> <span class="n">tsne_results</span><span class="p">[</span><span class="n">new_songs_ind</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
-    <span class="n">hue</span> <span class="o">=</span> <span class="n">kmeans</span><span class="o">.</span><span class="n">labels_</span><span class="p">[</span><span class="n">new_songs_ind</span><span class="p">],</span>
-    <span class="n">palette</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="s2">&quot;hls&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">kmeans</span><span class="o">.</span><span class="n">labels_</span><span class="p">[</span><span class="n">new_songs_ind</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,)))),</span>
-    <span class="n">legend</span> <span class="o">=</span> <span class="s2">&quot;full&quot;</span><span class="p">,</span>
-    <span class="n">alpha</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="p">)</span>
-
-<span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">tsne_results</span><span class="p">[</span><span class="n">playlist_song_ind</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> 
-    <span class="n">y</span> <span class="o">=</span> <span class="n">tsne_results</span><span class="p">[</span><span class="n">playlist_song_ind</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
-    <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;orange&#39;</span><span class="p">,</span>
-    <span class="c1">#legend = None,</span>
-    <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Original playlist&#39;</span><span class="p">,</span>
-    <span class="n">alpha</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
-    <span class="n">s</span> <span class="o">=</span> <span class="mi">50</span>
-<span class="p">)</span>
-
-<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Cluster (color) and position of songs in generated playlist vs original and seeds&#39;</span><span class="p">,</span> 
-       <span class="n">xlabel</span> <span class="o">=</span> <span class="s1">&#39;t-SNE 1&#39;</span><span class="p">,</span> <span class="n">ylabel</span> <span class="o">=</span> <span class="s1">&#39;t-SNE 2&#39;</span><span class="p">)</span>
-
-<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;generated_playlist_same_length.pdf&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()))</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
 
 <div class="output_wrapper">
 <div class="output">
@@ -14000,58 +13642,15 @@ div#notebook {
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[641]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Create songs-in-playlist indicator vector for our generated playlist</span>
-<span class="n">indicators_generated</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="n">indicators</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
-<span class="n">indicators_generated</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">new_songs_ind</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[642]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">playlist_dists</span> <span class="o">=</span> <span class="n">cosine_distances</span><span class="p">(</span><span class="n">indicators</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">indicators_generated</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,))</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[643]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Get song indicators of the 5 closest playlists to the one we generated</span>
-<span class="n">sorted_playlists</span> <span class="o">=</span> <span class="n">indicators</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">playlist_dists</span><span class="p">)[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">]]</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[644]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">closest_playlists</span><span class="p">)[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">]</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
 
 <div class="output_wrapper">
 <div class="output">
@@ -14090,16 +13689,6 @@ div#notebook {
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[648]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">master</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">song_ids</span><span class="p">[</span><span class="n">new_songs_ind</span><span class="p">]]</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
 
 <div class="output_wrapper">
 <div class="output">
@@ -14486,16 +14075,6 @@ div#notebook {
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[684]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">master</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">song_ids</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">sorted_playlists</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)]</span><span class="o">.</span><span class="n">flatten</span><span class="p">()]</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
 
 <div class="output_wrapper">
 <div class="output">
@@ -14882,16 +14461,6 @@ div#notebook {
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[699]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">master</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">song_ids</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">sorted_playlists</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)]</span><span class="o">.</span><span class="n">flatten</span><span class="p">()]</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
 
 <div class="output_wrapper">
 <div class="output">
@@ -15415,16 +14984,6 @@ div#notebook {
 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-    </div>
-</div>
-</div>
 
 </div>
     </div>
