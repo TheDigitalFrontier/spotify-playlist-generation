@@ -2,7 +2,7 @@
 <html>
 <head><meta charset="utf-8" />
 
-<title>introduction</title>
+<title>data_preparation</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
@@ -13093,22 +13093,14 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Introduction">Introduction<a class="anchor-link" href="#Introduction">&#182;</a></h1><p>We present here our implementation of the cold start problem. We have developed a model that can take in a small number of initial "seed" songs and output a relevant playlist including other songs that match the characteristics of the seed songs.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Data-preperation">Data preperation<a class="anchor-link" href="#Data-preperation">&#182;</a></h1><h2 id="Data">Data<a class="anchor-link" href="#Data">&#182;</a></h2><p>The raw data we started working with was from the Million Playlist Dataset. This data set was prepared as part of the <a href="https://recsys-challenge.spotify.com/">RecSys Challenge 2018</a> organized by Spotify, University of Massachusetts (Amherst), and Johannes Kepler University (Linz).</p>
-<p>Description of raw data:</p>
+<h2 id="Data-Source">Data Source<a class="anchor-link" href="#Data-Source">&#182;</a></h2><p>We began our work with the Million Playlist Dataset. This data set was prepared as part of the <a href="https://recsys-challenge.spotify.com/">RecSys Challenge 2018</a> organized by Spotify, University of Massachusetts (Amherst), and Johannes Kepler University (Linz).</p>
+<p>The raw data includes:</p>
 <ul>
-<li>1000 CSV files totally 5.4 GB</li>
-<li>Each CSV file has 1000 playlists each with a collection of approximately 50-200 songs</li>
+<li>1,000 CSV files, totally 5.4 GB</li>
+<li>Each CSV file has 1,000 playlists, each with a collection of approximately 50-200 songs</li>
 <li>~65,000 songs in each CSV file, ~65,000,000 million total observations (including duplicates) </li>
 </ul>
-<p>Data columns:</p>
+<p>The initial provided data features include:</p>
 <ul>
 <li><strong>Playlist Number:</strong> integer value ranging from 0 to 999 within each CSV file</li>
 <li><strong>Track Position:</strong> integer value starting from 0 indicating the position of the song in the playlist</li>
@@ -13120,7 +13112,7 @@ div#notebook {
 <li><strong>Album URI:</strong> alphanumeric identifier from Spotify</li>
 <li><strong>Duration:</strong> integer value in milliseconds</li>
 </ul>
-<p>We present below sample raw data from this dataset.</p>
+<p>Here is a sample of the provided data.</p>
 
 </div>
 </div>
@@ -13253,7 +13245,7 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Some very different playlist lengths:</p>
+<p>Playlists vary widely in the number of songs present on each.</p>
 
 </div>
 </div>
@@ -13295,7 +13287,7 @@ Name: track_uri, dtype: int64</pre>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>There are 1000 CSV files as expected.</p>
+<p>As expected, we begin with 1,000 CSV files to start our analysis.</p>
 
 </div>
 </div>
@@ -13324,12 +13316,13 @@ Name: track_uri, dtype: int64</pre>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Structuring-data">Structuring data<a class="anchor-link" href="#Structuring-data">&#182;</a></h2><p>For songs that appear in multiple playlists, data in each of the columns are repeated. A reasonable first step to slim down the size of the dataset without losing information or fidelity is to parse through all the files to create a reference table of all songs and their metadata. Each playlist can then be stored as a simple named object, where the name is the ID of the playlist and its value a vector of song IDs.</p>
-<p>Output from this exercise:</p>
+<h2 id="Data-Structuring">Data Structuring<a class="anchor-link" href="#Data-Structuring">&#182;</a></h2><p>For songs that appear in multiple playlists, data in each of the columns are repeated. A reasonable first step to slim down the size of the dataset without losing information or fidelity is to parse through all the files to create a reference table of all songs and their metadata. Each playlist can then be stored as a simple named object, where the name is the ID of the playlist and its value a vector of song IDs.</p>
+<p>From this exercise, we output two data frames:</p>
 <ul>
 <li><strong>Songs table:</strong> Pandas dataframe with all songs as rows and all data from individual CSV files as columns</li>
 <li><strong>Playlists series:</strong> Pandas series with playlist IDs as indices and vectors of song IDs as items</li>
 </ul>
+<p>Because of the scale of the data, we perform this exercise twice: once on a subset of 200,000 random playlists and once on the entire Million Playlist Dataset. Running this over the entire dataset has a run-time of 2.5 hours.</p>
 
 </div>
 </div>
@@ -13531,7 +13524,7 @@ To retain the current behavior and silence the warning, pass &#39;sort=True&#39;
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Once we have a master dataframe with all unique songs, we can assign an ID to each song.</p>
+<p>Once we have our master dataframe with all unique songs, we can assign an ID to each song, which we do as a new column at the end of the below dataframe labeled <code>song_id</code>.</p>
 
 </div>
 </div>
@@ -13666,6 +13659,14 @@ To retain the current behavior and silence the warning, pass &#39;sort=True&#39;
 </div>
 </div>
 
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>With our generated <code>song_id</code>, we replace the <code>track_uri</code> in each playlist and switch <code>song_id</code> to become the new index column. This allows us to make faster lookups using <code>song_id</code> in our future work. We conclude by saving our transformed data into pickle files, which provides faster and more compact files for checkpoint saving.</p>
+
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 
@@ -13840,7 +13841,8 @@ dtype: object
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Metadata-from-Spotify">Metadata from Spotify<a class="anchor-link" href="#Metadata-from-Spotify">&#182;</a></h2><p>To keep Spotify API requests reasonable, we randomly selected 200,000 playlists (out of total 1,000,000). Across these 200,000 playlists, we have 1,003,760 unique songs. We pull the data listed below for songs, artists, and albums from the Spotify API. Descriptions here are directly from <a href="https://developer.spotify.com/documentation/web-api/reference/">Spotify API reference documentation</a>.</p>
+<h2 id="Enriching-a-Song's-Musical-Features">Enriching a Song's Musical Features<a class="anchor-link" href="#Enriching-a-Song's-Musical-Features">&#182;</a></h2><p>Our recommendation hypothesis is that song features provide a data-based way of determining similarity and thus good matches to our seed songs. We leverage Spotify's open API to retrieve this musical features and enrich it into our dataset.</p>
+<p>To keep Spotify API requests reasonable, we randomly selected 200,000 playlists (out of the total 1,000,000). Across these 200,000 playlists, we have 1,003,760 unique songs. We pull the data listed below for songs, artists, and albums from the Spotify API. Descriptions here are directly from <a href="https://developer.spotify.com/documentation/web-api/reference/">Spotify API reference documentation</a>.</p>
 <h4 id="Song-features">Song features<a class="anchor-link" href="#Song-features">&#182;</a></h4><ul>
 <li><strong>acousticness:</strong> A confidence measure from 0.0 to 1.0 of whether the track is acoustic. 1.0 represents high confidence the track is acoustic.</li>
 <li><strong>danceability:</strong> Danceability describes how suitable a track is for dancing based on a combination of musical elements including tempo, rhythm stability, beat strength, and overall regularity. A value of 0.0 is least danceable and 1.0 is most danceable.</li>
@@ -13864,7 +13866,6 @@ dtype: object
 <li><strong>album_popularity:</strong> The popularity of the album. The value will be between 0 and 100, with 100 being the most popular. The popularity is calculated from the popularity of the album’s individual tracks.</li>
 <li><strong>release_date:</strong> The date the album was first released. </li>
 </ul>
-<p>After pulling data from the Spotify API, we have a dataset of 999,950 unique songs and their associated metadata.</p>
 
 </div>
 </div>
@@ -13881,8 +13882,15 @@ dtype: object
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Once we have saved all features data from the Spotify API, we add these new columns to the master songs table.</p>
+<p>After pulling data from the Spotify API, we have a dataset of 999,950 unique songs and their associated metadata. We join our retrieved features back into the master tables below.</p>
 
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Enriched-Master-Tracks">Enriched Master Tracks<a class="anchor-link" href="#Enriched-Master-Tracks">&#182;</a></h4>
 </div>
 </div>
 </div>
@@ -14121,6 +14129,13 @@ dtype: object
 </div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Enriched-Master-Artists">Enriched Master Artists<a class="anchor-link" href="#Enriched-Master-Artists">&#182;</a></h4>
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
@@ -14235,6 +14250,13 @@ dtype: object
 </div>
 </div>
 
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Enriched-Master-Albums">Enriched Master Albums<a class="anchor-link" href="#Enriched-Master-Albums">&#182;</a></h4>
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 
@@ -14362,6 +14384,13 @@ dtype: object
 </div>
 </div>
 
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Enriched-Master-Songs">Enriched Master Songs<a class="anchor-link" href="#Enriched-Master-Songs">&#182;</a></h4>
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 
@@ -14919,13 +14948,6 @@ dtype: object
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-
-</div>
-</div>
 </div>
     </div>
   </div>
