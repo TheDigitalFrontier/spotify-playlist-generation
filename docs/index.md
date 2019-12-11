@@ -1,5 +1,18 @@
 ## Welcome to the Digital Frontier
 
+[Introduction and Data Preparation](https://wfseaton.github.io/TheDigitalFrontier/Intro%20&%20data%20prep.html)
+---
+[Exploratory Data Analysis](https://wfseaton.github.io/TheDigitalFrontier/EDA.html)
+---
+[Dimensionality Reduction](https://wfseaton.github.io/TheDigitalFrontier/3.%20Dimensionality%20Reduction.html)
+---
+[Clustering Techniques](https://wfseaton.github.io/TheDigitalFrontier/clustering.html)
+---
+[Playlist Generation](https://wfseaton.github.io/TheDigitalFrontier/playlist_generation.html)
+---
+[Conclusion](https://wfseaton.github.io/TheDigitalFrontier/conclusion.html)
+---
+
 The Grid.<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A digital frontier.<br>
 I tried to picture clusters of information as they moved through the computer.<br>
