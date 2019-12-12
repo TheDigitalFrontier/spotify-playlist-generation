@@ -1,12 +1,12 @@
 ## Generating a Spotify Playlist
 
-<a href="https://wfseaton.github.io/TheDigitalFrontier/data_preparation.html">Data Preparation</a> -
-<a href="https://wfseaton.github.io/TheDigitalFrontier/data_exploration.html">Data Exploration</a> -
-<a href="https://wfseaton.github.io/TheDigitalFrontier/dimensionality_reduction.html">Dimensionality Reduction</a> -
-<a href="https://wfseaton.github.io/TheDigitalFrontier/clustering_techniques.html">Clustering Techniques</a> -
-<a href="https://wfseaton.github.io/TheDigitalFrontier/playlist_generation.html">Playlist Generation</a> -
-<a href="https://wfseaton.github.io/TheDigitalFrontier/conclusion.html">Conclusion and Future Work</a> -
-<a href="https://wfseaton.github.io/TheDigitalFrontier/authors_gift.html">Authors' Gift</a>
+<a href="https://wfseaton.github.io/TheDigitalFrontier/data_preparation">Data Preparation</a> -
+<a href="https://wfseaton.github.io/TheDigitalFrontier/data_exploration">Data Exploration</a> -
+<a href="https://wfseaton.github.io/TheDigitalFrontier/dimensionality_reduction">Dimensionality Reduction</a> -
+<a href="https://wfseaton.github.io/TheDigitalFrontier/clustering_techniques">Clustering Techniques</a> -
+<a href="https://wfseaton.github.io/TheDigitalFrontier/playlist_generation">Playlist Generation</a> -
+<a href="https://wfseaton.github.io/TheDigitalFrontier/conclusion">Conclusion and Future Work</a> -
+<a href="https://wfseaton.github.io/TheDigitalFrontier/authors_gift">Authors' Gift</a>
 
 <center><img src="SpotifyLogo.png" width="300" height="100" /></center>
 
