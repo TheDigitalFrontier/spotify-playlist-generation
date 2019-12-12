@@ -1,13 +1,13 @@
 ## Welcome to the Digital Frontier 
 
 <a href="https://wfseaton.github.io/TheDigitalFrontier/">Home Page</a> - 
-<a href="https://wfseaton.github.io/TheDigitalFrontier/data_preparation">Data Preparation</a> - 
-<a href="https://wfseaton.github.io/TheDigitalFrontier/data_exploration">Data Exploration</a> - 
-<a href="https://wfseaton.github.io/TheDigitalFrontier/dimensionality_reduction"><b>Dimensionality Reduction</b></a> - 
-<a href="https://wfseaton.github.io/TheDigitalFrontier/clustering_techniques">Clustering Techniques</a> - 
-<a href="https://wfseaton.github.io/TheDigitalFrontier/playlist_generation">Playlist Generation</a> - 
-<a href="https://wfseaton.github.io/TheDigitalFrontier/conclusion">Conclusion</a> - 
-<a href="https://wfseaton.github.io/TheDigitalFrontier/authors_gift">Authors' Gift</a>
+<a href="https://wfseaton.github.io/TheDigitalFrontier/data_preparation.html">Data Preparation</a> - 
+<a href="https://wfseaton.github.io/TheDigitalFrontier/data_exploration.html">Data Exploration</a> - 
+<a href="https://wfseaton.github.io/TheDigitalFrontier/dimensionality_reduction.html"><b>Dimensionality Reduction</b></a> - 
+<a href="https://wfseaton.github.io/TheDigitalFrontier/clustering_techniques.html">Clustering Techniques</a> - 
+<a href="https://wfseaton.github.io/TheDigitalFrontier/playlist_generation.html">Playlist Generation</a> - 
+<a href="https://wfseaton.github.io/TheDigitalFrontier/conclusion.html">Conclusion</a> - 
+<a href="https://wfseaton.github.io/TheDigitalFrontier/authors_gift.html">Authors' Gift</a>
 
 -------------------------------------------------------------------------------------------------------------------
 

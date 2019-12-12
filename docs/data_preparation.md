@@ -1,13 +1,13 @@
 ## Welcome to the Digital Frontier 
 
 <a href="https://wfseaton.github.io/TheDigitalFrontier/">Home Page</a> - 
-<a href="https://wfseaton.github.io/TheDigitalFrontier/data_preparation"><b>Data Preparation</b></a> - 
-<a href="https://wfseaton.github.io/TheDigitalFrontier/data_exploration">Data Exploration</a> - 
-<a href="https://wfseaton.github.io/TheDigitalFrontier/dimensionality_reduction">Dimensionality Reduction</a> - 
-<a href="https://wfseaton.github.io/TheDigitalFrontier/clustering_techniques">Clustering Techniques</a> - 
-<a href="https://wfseaton.github.io/TheDigitalFrontier/playlist_generation">Playlist Generation</a> - 
-<a href="https://wfseaton.github.io/TheDigitalFrontier/conclusion">Conclusion</a> - 
-<a href="https://wfseaton.github.io/TheDigitalFrontier/authors_gift">Authors' Gift</a>
+<a href="https://wfseaton.github.io/TheDigitalFrontier/data_preparation.html"><b>Data Preparation</b></a> - 
+<a href="https://wfseaton.github.io/TheDigitalFrontier/data_exploration.html">Data Exploration</a> - 
+<a href="https://wfseaton.github.io/TheDigitalFrontier/dimensionality_reduction.html">Dimensionality Reduction</a> - 
+<a href="https://wfseaton.github.io/TheDigitalFrontier/clustering_techniques.html">Clustering Techniques</a> - 
+<a href="https://wfseaton.github.io/TheDigitalFrontier/playlist_generation.html">Playlist Generation</a> - 
+<a href="https://wfseaton.github.io/TheDigitalFrontier/conclusion.html">Conclusion</a> - 
+<a href="https://wfseaton.github.io/TheDigitalFrontier/authors_gift.html">Authors' Gift</a>
 
 -------------------------------------------------------------------------------------------------------------------
 
@@ -19,9 +19,9 @@ We began our work with the Million Playlist Dataset. This data set was prepared 
 
 The raw data includes:
 
-- 1,000 CSV files, totally 5.4 GB
+- 1,000 CSV files, totaling 11.63 GB
 - Each CSV file has 1,000 playlists, each with a collection of approximately 50-200 songs
-- ~65,000 songs in each CSV file, ~65,000,000 million total observations (including duplicates) 
+- ~65,000 songs in each CSV file, ~65,000,000 total observations (including duplicates) 
 
 The initial provided data features include:
 
