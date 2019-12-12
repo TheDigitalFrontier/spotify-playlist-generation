@@ -1,5 +1,6 @@
 ## Generating a Spotify Playlist
 
+<a href="https://wfseaton.github.io/TheDigitalFrontier/">Home Page</a> -
 <a href="https://wfseaton.github.io/TheDigitalFrontier/data_preparation">Data Preparation</a> -
 <a href="https://wfseaton.github.io/TheDigitalFrontier/data_exploration">Data Exploration</a> -
 <a href="https://wfseaton.github.io/TheDigitalFrontier/dimensionality_reduction">Dimensionality Reduction</a> -
