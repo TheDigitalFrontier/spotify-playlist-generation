@@ -1,18 +1,14 @@
 ## Welcome to the Digital Frontier
 
----
-<span style="color:blue">[Introduction and Data Preparation](https://wfseaton.github.io/TheDigitalFrontier/Intro%20&%20data%20prep.html)</span>
----
-<span style="color:blue">[Exploratory Data Analysis](https://wfseaton.github.io/TheDigitalFrontier/EDA.html)</span>
----
-<span style="color:blue">[Dimensionality Reduction](https://wfseaton.github.io/TheDigitalFrontier/3.%20Dimensionality%20Reduction.html)</span>
----
-<span style="color:blue">[Clustering Techniques](https://wfseaton.github.io/TheDigitalFrontier/clustering.html)</span>
----
-<span style="color:blue">[Playlist Generation](https://wfseaton.github.io/TheDigitalFrontier/playlist_generation.html)</span>
----
-<span style="color:blue">[Conclusion](https://wfseaton.github.io/TheDigitalFrontier/conclusion.html)</span>
-
+<a href="https://wfseaton.github.io/TheDigitalFrontier/">Home Page</a> -
+<a href="https://wfseaton.github.io/TheDigitalFrontier/data_preparation.html">Data Preparation</a> -
+<a href="https://wfseaton.github.io/TheDigitalFrontier/data_exploration.html">Data Exploration</a> -
+<a href="https://wfseaton.github.io/TheDigitalFrontier/dimensionality_reduction.html">Dimensionality Reduction</a> -
+<a href="https://wfseaton.github.io/TheDigitalFrontier/clustering_techniques.html">Clustering Techniques</a> -
+<a href="https://wfseaton.github.io/TheDigitalFrontier/playlist_generation.html">Playlist Generation</a> -
+<a href="https://wfseaton.github.io/TheDigitalFrontier/conclusion.html">Conclusion</a> -
+<a href="https://wfseaton.github.io/TheDigitalFrontier/authors_gift.html"><b>Authors' Gift</b></a></p>
+<p><center><i>
 The Grid.<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A digital frontier.<br>
 I tried to picture clusters of information as they moved through the computer.<br>
@@ -25,3 +21,4 @@ I kept dreaming of a world I thought I’d never see.<br>
 And then,<br>
 &nbsp;&nbsp;one day...<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;I got in.
+</i></center></p>

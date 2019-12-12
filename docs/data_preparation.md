@@ -1,13 +1,13 @@
 ## Welcome to the Digital Frontier 
 
 <a href="https://wfseaton.github.io/TheDigitalFrontier/">Home Page</a> - 
-<a href="https://wfseaton.github.io/TheDigitalFrontier/data_preparation.html"><b>Data Preparation</b></a> - 
-<a href="https://wfseaton.github.io/TheDigitalFrontier/data_exploration.html">Data Exploration</a> - 
-<a href="https://wfseaton.github.io/TheDigitalFrontier/dimensionality_reduction.html">Dimensionality Reduction</a> - 
-<a href="https://wfseaton.github.io/TheDigitalFrontier/clustering_techniques.html">Clustering Techniques</a> - 
-<a href="https://wfseaton.github.io/TheDigitalFrontier/playlist_generation.html">Playlist Generation</a> - 
-<a href="https://wfseaton.github.io/TheDigitalFrontier/conclusion.html">Conclusion</a> - 
-<a href="https://wfseaton.github.io/TheDigitalFrontier/authors_gift.html">Authors' Gift</a>
+<a href="https://wfseaton.github.io/TheDigitalFrontier/data_preparation"><b>Data Preparation</b></a> - 
+<a href="https://wfseaton.github.io/TheDigitalFrontier/data_exploration">Data Exploration</a> - 
+<a href="https://wfseaton.github.io/TheDigitalFrontier/dimensionality_reduction">Dimensionality Reduction</a> - 
+<a href="https://wfseaton.github.io/TheDigitalFrontier/clustering_techniques">Clustering Techniques</a> - 
+<a href="https://wfseaton.github.io/TheDigitalFrontier/playlist_generation">Playlist Generation</a> - 
+<a href="https://wfseaton.github.io/TheDigitalFrontier/conclusion">Conclusion</a> - 
+<a href="https://wfseaton.github.io/TheDigitalFrontier/authors_gift">Authors' Gift</a>
 
 -------------------------------------------------------------------------------------------------------------------
 
@@ -136,21 +136,16 @@ Here is a sample of the provided data.
 </div>
 
 
-    Number of CSV files: 1000
-
-
-Having 1,000 CSV files presents serious computational challenges that could have forced us to use a tiny subset of available playlists during our exploration and modeling phases. 
-
 ## Data Structuring
 
-For songs that appear in multiple playlists, data in each of the columns are repeated. A reasonable first step to slim down the size of the dataset without losing information or fidelity is to parse through all the files to create a reference table of all songs and their metadata. Each playlist can then be stored as a simple named object, where the name is the ID of the playlist and its value a vector of song IDs.
+For songs that appear in multiple playlists, data in each of the columns are repeated. This produces a total of 11.63 GB of data, a significant computational challenge. A reasonable first step to slim down the size of the dataset without losing information or fidelity is to parse through all the files to create a reference table of all songs and their metadata. Each playlist can then be stored as a simple named object, where the name is the ID of the playlist and its value a vector of song IDs.
 
 From this exercise, we output two data frames:
 
 - **Songs table:** Pandas dataframe with all songs as rows and all data from individual CSV files as columns
 - **Playlists series:** Pandas series with playlist IDs as indices and vectors of song IDs as items
 
-Because of the scale of the data, we perform this exercise twice: once on a subset of 200,000 random playlists and once on the entire Million Playlist Dataset. Running this over the entire dataset has a run-time of 2.5 hours.
+Running this over the entire dataset has a run-time of 2.5 hours. This method of storing songs in a dedicated table reduces 65 million song observations to just 2.5 million unique songs. To make this computationally tractable, we leveraged Pandas data frames and the fact that their indices, if sorted and maintained properly, leverage hash tables for quick lookups. This is in contrast to using a base Python method like for loops or list comprehension, which would require searching the full table for the song each time. This reduces the overall data scale from 11.63 GB to just 0.42 GB for the songs master table and 0.54 GB for the playlist vectors, a total that is less than 10% the original size with no information loss. Our efforts in complexity reduction enabled us to perform our modeling at a significantly larger scale and use more data to generate better recommendations.
 
 Once we have our master dataframe with all unique songs, we can assign an ID to each song, which we do as a new column at the end of the below dataframe labeled `song_id`.
 
@@ -397,7 +392,7 @@ With our generated `song_id`, we replace the `track_uri` in each playlist and sw
 
 ## Enriching a Song's Musical Features
 
-Our recommendation hypothesis is that song features provide a data-based way of determining similarity and thus good matches to our seed songs. We leverage Spotify's open API to retrieve this musical features and enrich it into our dataset.
+Our recommendation hypothesis is that song features provide a data-based way of determining similarity and thus good matches to our seed songs. We leverage Spotify's open API to retrieve this musical features and enrich it into our dataset using Spotipy, a lightweight Python library that allows us to authenticate to Spotify and query a large number of features on the song, artist, and album. 
 
 To keep Spotify API requests reasonable, we randomly selected 200,000 playlists (out of the total 1,000,000). Across these 200,000 playlists, we have 1,003,760 unique songs. We pull the data listed below for songs, artists, and albums from the Spotify API. Descriptions here are directly from [Spotify API reference documentation](https://developer.spotify.com/documentation/web-api/reference/).
 

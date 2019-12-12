@@ -1,0 +1,50 @@
+## Welcome to the Digital Frontier 
+
+<a href="https://wfseaton.github.io/TheDigitalFrontier/">Home Page</a> - 
+<a href="https://wfseaton.github.io/TheDigitalFrontier/data_preparation">Data Preparation</a> - 
+<a href="https://wfseaton.github.io/TheDigitalFrontier/data_exploration">Data Exploration</a> - 
+<a href="https://wfseaton.github.io/TheDigitalFrontier/dimensionality_reduction">Dimensionality Reduction</a> - 
+<a href="https://wfseaton.github.io/TheDigitalFrontier/clustering_techniques">Clustering Techniques</a> - 
+<a href="https://wfseaton.github.io/TheDigitalFrontier/playlist_generation">Playlist Generation</a> - 
+<a href="https://wfseaton.github.io/TheDigitalFrontier/conclusion"><b>Conclusion</b></a> - 
+<a href="https://wfseaton.github.io/TheDigitalFrontier/authors_gift">Authors' Gift</a>
+
+-------------------------------------------------------------------------------------------------------------------
+
+# Generating Our Playlist and the Lessons Learned
+
+We started off with the goal of generating a thematic and enjoyable playlist from a cold start, meaning having only a few seed songs that we can derive a theme from. Our starting data was a large sample of manually curated playlists and the songs in each. From there, we were able to leverage the Spotify API to enrich our song metadata with features about the inherent nature of each song, including features like tempo, danceability, variance and more. This metadata meant that we could begin to explore the defining characteristics of a song and how families of songs related to each other.
+
+To do this, we took our enriched continuous features and expanded our categorical features to the fullest extent, applying dimensionality reduction techniques to try to distill what about each song proved most important in defining families and relationships. ...... todo add detail
+
+Songs with dimensions reduced to the remaining critical features were then passed through multiple variations of clustering techniques to see which was better able to separate related families of songs. HDBSCAN, the more complex and high-powered algorithm, failed to produce a sufficient number of distinct clusters for use in our recommendation algorithm because it considered "noise" as a first-order principle and most songs are similar enough in their core musical attributes to prevent styles rising above the density threshold. K-Means proved more practically useful for recommendation as it forced separation to a manually defined number of clusters and assessed song similarity on a relative basis, a technique that aligns better to song styles. Projecting both clustering techniques on a t-SNE graph enabled a form of standardized assessment, though it complicated interpretability by reducing the number of dimensions the algorithms were considering to just the two required for plotting.
+
+With our important features identified and the most effective clustering technique chosen, we constructed a playlist generation algorithm that allowed a user to select a handful of seed songs and produce a playlist comprised of songs from the same advanced clusters. Visual analysis indicated promising returns when looking at overlapping songs between a generated playlist and a manually curated seed playlist.
+
+In order to improve upon our visual analysis, we invented a playlist similarity coefficient defined by a distance metric between generated playlists and any manually curated one. We used this similarity coefficient to compare generated playlists to curated ones and saw examples of the closest playlists having similar artists and genres to our generated ones. We believe this shows that our model is succeeding in generating thematic playlists from a cold start and the musical features of the songs provided.
+
+# Further Development
+
+One insight that cannot be ignored is that most songs can not be differentiated into distinct families by their musical features on an absolute basis. Only a few clusters, all small in size, passed the density threshold of HDBSCAN to be identified. This suggests that further improvement and personalization based on inherent qualities of each song are unlikely to come.
+
+Instead, we would want to move to analysis of the social graph. Underlying our recommendation modeling was the assumption that manually curated playlists should be considered high quality because someone invested time and effort into it. It represents their stated preference. Similarly, we can use people's listening history to represent their unstated preferences and infer that if you are listening to a song, you enjoy it. Further, if one person has listened to these 100 songs and a second person has also listened to 30 of the same songs, they would likely enjoy the remaining 70. Integrating user listening history in this way would allow us to deploy our clustering techniques and produce user preference profiles from which we can pull songs to generate new playlists instead of or in addition to our musical features clusters.
+
+If we wanted to improve our recommendations based solely on musical features of the song itself, we would recommend integrating digital health data into the algorithm and regressing the tempo or energy of a song with a health metric such as heart rate at the time of listening. This would enable us to identify families of songs that match at various biological frequencies and generate playlists of songs for that pace. Playlists are a new musical consumption style in that they are meant to last an hour or longer and should provide a user with a continuous auditory sensation for that period of time. They differ from the album format in that an album is designed to be a journey directed by the artist, to take the listener through a designed experience. Playlists are meant to match exclusively to mood, making the potential integration of digital health data an exciting avenue of exploration.
+
+# Reference Articles
+
+We designed our model from first-principles following our exploratory analysis of the data. Our chosen techniques and the successful implementation of them benefited greatly from various online resources, the most significant of which we've included below.
+
+---
+
+McInnes, Leland, John Healy, Steve Astels (2016). **The hdbscan Clustering Library**. Retrieved from https://hdbscan.readthedocs.io/en/latest/
+
+Shaikh, Faizan (2018, May). **Essentials of Deep Learning: Introduction to Unsupervised Deep Learning (with Python codes)**. Retrieved from https://www.analyticsvidhya.com/blog/2018/05/essentials-of-deep-learning-trudging-into-unsupervised-deep-learning/
+
+Chengwei (2018, June). **How to do Unsupervised Clustering with Keras**. Retrieved from https://www.dlology.com/blog/how-to-do-unsupervised-clustering-with-keras/
+
+Pagels, Max (2017, December). **Introducing One of the Best Hacks in Machine Learning: the Hashing Trick**. Retrieved from https://medium.com/value-stream-design/introducing-one-of-the-best-hacks-in-machine-learning-the-hashing-trick-bf6a9c8af18f
+
+Derksen, Luuk (2016, October). **Visualising high-dimensional datasets using PCA and t-SNE in Python**. Retrieved from https://towardsdatascience.com/visualising-high-dimensional-datasets-using-pca-and-t-sne-in-python-8ef87e7915b
+
+---

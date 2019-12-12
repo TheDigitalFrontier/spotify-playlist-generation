@@ -2,7 +2,7 @@
 <html>
 <head><meta charset="utf-8" />
 
-<title>data_preparation</title>
+<title>authors_gift</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
@@ -13077,7 +13077,8 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Welcome-to-the-Digital-Frontier">Welcome to the Digital Frontier<a class="anchor-link" href="#Welcome-to-the-Digital-Frontier">&#182;</a></h2><p><a href="https://wfseaton.github.io/TheDigitalFrontier/">Home Page</a> -
+<h2 id="Welcome-to-the-Digital-Frontier">Welcome to the Digital Frontier<a class="anchor-link" href="#Welcome-to-the-Digital-Frontier">&#182;</a></h2><p>
+<a href="https://wfseaton.github.io/TheDigitalFrontier/">Home Page</a> -
 <a href="https://wfseaton.github.io/TheDigitalFrontier/data_preparation.html">Data Preparation</a> -
 <a href="https://wfseaton.github.io/TheDigitalFrontier/data_exploration.html">Data Exploration</a> -
 <a href="https://wfseaton.github.io/TheDigitalFrontier/dimensionality_reduction.html">Dimensionality Reduction</a> -
