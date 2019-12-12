@@ -1,7 +1,7 @@
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Welcome-to-the-Digital-Frontier">Welcome to the Digital Frontier<a class="anchor-link" href="#Welcome-to-the-Digital-Frontier">&#182;</a></h2><p>
+<h2 id="Generating-a-Spotify-Playlist">Generating a Spotify Playlist</a></h2><p>
 <a href="https://wfseaton.github.io/TheDigitalFrontier/">Home Page</a> -
 <a href="https://wfseaton.github.io/TheDigitalFrontier/data_preparation">Data Preparation</a> -
 <a href="https://wfseaton.github.io/TheDigitalFrontier/data_exploration">Data Exploration</a> -

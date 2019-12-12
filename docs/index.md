@@ -1,4 +1,4 @@
-## Welcome to the Digital Frontier
+## Generating a Spotify Playlist
 
 <a href="https://wfseaton.github.io/TheDigitalFrontier/data_preparation.html">Data Preparation</a> -
 <a href="https://wfseaton.github.io/TheDigitalFrontier/data_exploration.html">Data Exploration</a> -
