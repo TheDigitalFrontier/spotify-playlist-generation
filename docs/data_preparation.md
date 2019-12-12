@@ -1,4 +1,4 @@
-## Welcome to the Digital Frontier 
+## Generating a Spotify Playlist
 
 <a href="https://wfseaton.github.io/TheDigitalFrontier/">Home Page</a> - 
 <a href="https://wfseaton.github.io/TheDigitalFrontier/data_preparation.html"><b>Data Preparation</b></a> - 
@@ -145,7 +145,7 @@ From this exercise, we output two data frames:
 - **Songs table:** Pandas dataframe with all songs as rows and all data from individual CSV files as columns
 - **Playlists series:** Pandas series with playlist IDs as indices and vectors of song IDs as items
 
-Running this over the entire dataset has a run-time of 2.5 hours. This method of storing songs in a dedicated table reduces 65 million song observations to just 2.5 million unique songs. To make this computationally tractable, we leveraged Pandas data frames and the fact that their indices, if sorted and maintained properly, leverage hash tables for quick lookups. This is in contrast to using a base Python method like for loops or list comprehension, which would require searching the full table for the song each time. This reduces the overall data scale from 11.63 GB to just 0.42 GB for the songs master table and 0.54 GB for the playlist vectors, a total that is less than 10% the original size with no information loss. Our efforts in complexity reduction enabled us to perform our modeling at a significantly larger scale and use more data to generate better recommendations.
+Running this over the entire dataset has a run-time of 2.5 hours. This method of storing songs in a dedicated table reduces 65 million song observations to just 2.5 million unique songs. To make this computationally tractable, we leveraged Pandas data frames and the fact that their indices, if sorted and maintained properly, leverage hash tables for quick lookups. This is in contrast to using a base Python method like loops or list comprehension, which would require searching the full table for the song each time. This reduced the overall data scale from 11.63 GB to just 0.42 GB for the songs master table and 0.54 GB for the playlist vectors, a total that is less than 10% the original size with no information loss. Our efforts in complexity reduction enabled us to perform our modeling at a significantly larger scale and use more data to generate better recommendations.
 
 Once we have our master dataframe with all unique songs, we can assign an ID to each song, which we do as a new column at the end of the below dataframe labeled `song_id`.
 
@@ -254,7 +254,7 @@ Once we have our master dataframe with all unique songs, we can assign an ID to 
 </div>
 
 
-With our generated `song_id`, we replace the `track_uri` in each playlist and switch `song_id` to become the new index column. This allows us to make faster lookups using `song_id` in our future work. We conclude by saving our transformed data into pickle files, which provides faster and more compact files for checkpoint saving.
+With our generated `song_id`, we replace the `track_uri` in each playlist and switch `song_id` to become the new index column. This allows us to make faster lookups using `song_id` in our future work.
 
     10000/200000 -- 38.7440550327301 s
     20000/200000 -- 43.11882281303406 s
@@ -392,7 +392,7 @@ With our generated `song_id`, we replace the `track_uri` in each playlist and sw
 
 ## Enriching a Song's Musical Features
 
-Our recommendation hypothesis is that song features provide a data-based way of determining similarity and thus good matches to our seed songs. We leverage Spotify's open API to retrieve this musical features and enrich it into our dataset using Spotipy, a lightweight Python library that allows us to authenticate to Spotify and query a large number of features on the song, artist, and album. 
+Our recommendation hypothesis is that song features provide a data-based way of determining similarity and thus good matches to our seed songs. We leverage Spotify's open API to retrieve these musical features and add it into our dataset using Spotipy, a lightweight Python library that allows us to authenticate to Spotify and easily query features on the song, artist, and album. 
 
 To keep Spotify API requests reasonable, we randomly selected 200,000 playlists (out of the total 1,000,000). Across these 200,000 playlists, we have 1,003,760 unique songs. We pull the data listed below for songs, artists, and albums from the Spotify API. Descriptions here are directly from [Spotify API reference documentation](https://developer.spotify.com/documentation/web-api/reference/).
 
@@ -419,9 +419,9 @@ To keep Spotify API requests reasonable, we randomly selected 200,000 playlists 
 - **album_popularity:** The popularity of the album. The value will be between 0 and 100, with 100 being the most popular. The popularity is calculated from the popularity of the album’s individual tracks.
 - **release_date:** The date the album was first released. 
 
-After pulling data from the Spotify API, we have a dataset of 999,950 unique songs and their associated metadata. We join our retrieved features back into the master tables below.
+After pulling data from the Spotify API, we have a dataset of 999,950 unique songs and their associated metadata. We join our retrieved features back into the master tables to produce our final data frames below. We conclude by saving our transformed data into pickle files, which provides faster and more compact files for checkpoint saving.
 
-#### Enriched Master Tracks
+#### Enriched Tracks Dataframe
 
 
 
@@ -643,7 +643,7 @@ After pulling data from the Spotify API, we have a dataset of 999,950 unique son
 
 
 
-#### Enriched Master Artists
+#### Enriched Artists Dataframe
 
 
 
@@ -745,7 +745,7 @@ After pulling data from the Spotify API, we have a dataset of 999,950 unique son
 
 
 
-#### Enriched Master Albums
+#### Enriched Albums Dataframe
 
 
 
@@ -859,191 +859,7 @@ After pulling data from the Spotify API, we have a dataset of 999,950 unique son
 
 
 
-#### Enriched Master Songs
-
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>artist_name</th>
-      <th>artist_uri</th>
-      <th>track_name</th>
-      <th>album_uri</th>
-      <th>duration_ms</th>
-      <th>album_name</th>
-      <th>count</th>
-      <th>track_uri</th>
-      <th>song_id</th>
-    </tr>
-    <tr>
-      <th>song_id</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>Sidney Bechet's Blue Note Jazzmen</td>
-      <td>spotify:artist:2XouUSO0EAJ9gMMoHiXqMt</td>
-      <td>Muskrat Ramble</td>
-      <td>spotify:album:04hQBJ7YSuNnZ0nbuXNYbY</td>
-      <td>220293</td>
-      <td>Jazz Classics</td>
-      <td>1</td>
-      <td>spotify:track:0002yNGLtYSYtc0X6ZnFvp</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>Zach Farlow</td>
-      <td>spotify:artist:2jTojc4rAsOMx6200a8Ah1</td>
-      <td>Thas What I Do</td>
-      <td>spotify:album:0UHfgx3ITlxePDXLaN5Y6x</td>
-      <td>222727</td>
-      <td>The Great Escape 2</td>
-      <td>2</td>
-      <td>spotify:track:00039MgrmLoIzSpuYKurn9</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>Two Steps from Hell</td>
-      <td>spotify:artist:2qvP9yerCZCS0U1gZU8wYp</td>
-      <td>Nightwood</td>
-      <td>spotify:album:1BD29pKydSXe1EsHFj0GrQ</td>
-      <td>189638</td>
-      <td>Colin Frake On Fire Mountain</td>
-      <td>4</td>
-      <td>spotify:track:0006Rv1e2Xfh6QooyKJqKS</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>Little Simz</td>
-      <td>spotify:artist:6eXZu6O7nAUA5z6vLV8NKI</td>
-      <td>Mandarin Oranges Part 2</td>
-      <td>spotify:album:32RJzqlapfiU0fr2l4SSW9</td>
-      <td>198000</td>
-      <td>E.D.G.E</td>
-      <td>1</td>
-      <td>spotify:track:0007AYhg2UQbEm88mxu7js</td>
-      <td>3</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>Slam</td>
-      <td>spotify:artist:0Y0Kj7BOR5DM0UevuY7IvO</td>
-      <td>Movement</td>
-      <td>spotify:album:62VkRE2ucNvZDnYMCsnNDh</td>
-      <td>447534</td>
-      <td>Movement</td>
-      <td>1</td>
-      <td>spotify:track:0009mEWM7HILVo4VZYtqwc</td>
-      <td>4</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>1003755</th>
-      <td>Compay Segundo</td>
-      <td>spotify:artist:2wpr4ILskkRzPBGodmbMs1</td>
-      <td>Me Diras Que Sabroso</td>
-      <td>spotify:album:1lnqHuxkVGegpTyxxdDYY8</td>
-      <td>215813</td>
-      <td>Será Cuando Tu Digas</td>
-      <td>1</td>
-      <td>spotify:track:7zzptITgTKf4HpJM8ye47v</td>
-      <td>1003755</td>
-    </tr>
-    <tr>
-      <th>1003756</th>
-      <td>Between The Trees</td>
-      <td>spotify:artist:4M6SYbj2q4kUUrz9zKVqKZ</td>
-      <td>Spain</td>
-      <td>spotify:album:0rO9chhocJlAcdK0DfAMHi</td>
-      <td>233933</td>
-      <td>Spain</td>
-      <td>7</td>
-      <td>spotify:track:7zzpwV2lgKsLke68yFoZdp</td>
-      <td>1003756</td>
-    </tr>
-    <tr>
-      <th>1003757</th>
-      <td>Hans Zimmer</td>
-      <td>spotify:artist:0YC192cP3KPCRWx8zr8MfZ</td>
-      <td>Driving [Driving Miss Daisy]</td>
-      <td>spotify:album:7J4EueX1dCR0slkv6FLr9K</td>
-      <td>340253</td>
-      <td>Zimmer, H.: The Wings of a Film</td>
-      <td>1</td>
-      <td>spotify:track:7zzrUgpSu2MSZF4FecBN3D</td>
-      <td>1003757</td>
-    </tr>
-    <tr>
-      <th>1003758</th>
-      <td>ALMA</td>
-      <td>spotify:artist:6c0mTNAxJxlp9HpKTUZwA8</td>
-      <td>Karma - Vince Remix</td>
-      <td>spotify:album:3gK8J6JM5Wz7F4q2qCXY6j</td>
-      <td>198240</td>
-      <td>Karma</td>
-      <td>1</td>
-      <td>spotify:track:7zzuTn6PnJ1DVfAiGsd4N0</td>
-      <td>1003758</td>
-    </tr>
-    <tr>
-      <th>1003759</th>
-      <td>D&amp;B</td>
-      <td>spotify:artist:3uCW660nT9zh4oF4WhlBCl</td>
-      <td>Princesa De Mis Sueños</td>
-      <td>spotify:album:2Qv89jKrJtXf5SjThoJvHE</td>
-      <td>185577</td>
-      <td>Princesa De Mis Sueños</td>
-      <td>1</td>
-      <td>spotify:track:7zzxEH0xUl5k3p6IxUfgAO</td>
-      <td>1003759</td>
-    </tr>
-  </tbody>
-</table>
-<p>1003760 rows × 9 columns</p>
-</div>
-
-
+#### Total and Complete Master Songs Data Frame
 
 
 

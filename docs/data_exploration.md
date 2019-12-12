@@ -1,4 +1,4 @@
-## Welcome to the Digital Frontier 
+## Generating a Spotify Playlist
 
 <a href="https://wfseaton.github.io/TheDigitalFrontier/">Home Page</a> - 
 <a href="https://wfseaton.github.io/TheDigitalFrontier/data_preparation.html">Data Preparation</a> - 
@@ -44,7 +44,7 @@ Our enriched master tables provides us with fertile ground for exploratory data 
 
 ### Playlist Distributions
 
-We begin by seeking to understand how many songs appear in each playlist as well as how many playlists each song appears in. There is a very strong right skew for song distribution, as a few songs appear in an enormously large number of playlists while the vast majority of songs appear in very few playlists overall. Because of this, we have filtered out songs that appear only once or in more than 50 playlists to present a more readable distribution.
+We begin by seeking to understand how many songs appear in each playlist as well as how many playlists each song appears in. There is a very strong right skew for song distribution, as a few songs appear in an enormously large number of playlists while the vast majority of songs appear in very few playlists overall. Because of this, we have filtered out songs that appear only once, or in more than 50 playlists, to present a more readable distribution.
 
 
 ![png](data_exploration_files/data_exploration_7_0.png)
@@ -85,7 +85,7 @@ For our newly enriched musical features, we leverage Seaborn distribution plots 
 
 ## Pairwise associations
 
-We next explore whether any features exhibit correlations between each other. We do this to get an early sense on if relationships exist that a model could learn or if any model we apply would struggle with randomness. The majority of features do appear to be randomly related, with data distributions materializing as complete squares on the pairplot graphs. There are potential relationships that show promise, which we continued to explore in detail.
+We next explore whether any features exhibit correlations between each other. We do this to get an early sense on if relationships exist that a model could learn or if any model we apply would struggle with randomness. The majority of features do appear to be randomly related, with data distributions materializing as complete squares on the pairplot graphs. There are some potential relationships that show promise, which we continued to explore in detail.
 
     Time elapsed: 275.631 seconds
 
@@ -94,7 +94,7 @@ We next explore whether any features exhibit correlations between each other. We
 ![png](data_exploration_files/data_exploration_15_1.png)
 
 
-`Energy` and `loudness` have the most visually linear relationship, where as `energy` increases so too does `loudness`. We have affectionality labeled this the "*Haley's Comet of Music*".
+`Energy` and `loudness` have the most visually linear relationship, where, as `energy` increases, so too does `loudness`. We have affectionately labeled this the "*Haley's Comet of Music*".
 
     Time elapsed: 561.528 seconds
 
@@ -143,7 +143,7 @@ We started with `danceability` and see the hint of a linear relationship, where 
 ![png](data_exploration_files/data_exploration_25_1.png)
 
 
-`Energy` actually appears to have very little impact on playlist inclusion, with songs at every level of energy included at high amounts. Playlists vary across their desired theme, from slower classical music to upbeat electronic, so this mirrors our expectations.
+`Energy` appears to have very little impact on playlist inclusion, with songs at every level of energy included at high amounts. Playlists vary across their desired theme, from slower classical music to upbeat electronic, so this mirrors our expectations.
 
     Time elapsed: 1.973 seconds
 
@@ -152,7 +152,7 @@ We started with `danceability` and see the hint of a linear relationship, where 
 ![png](data_exploration_files/data_exploration_27_1.png)
 
 
-There is an expected relationship between `artist_popularity` as presented by Spotify and the number of playlists those songs are included in.
+There exists the expected relationship between `artist_popularity` as calculated by Spotify and the number of playlists those songs are included in.
 
     Time elapsed: 1.954 seconds
 
@@ -161,7 +161,7 @@ There is an expected relationship between `artist_popularity` as presented by Sp
 ![png](data_exploration_files/data_exploration_29_1.png)
 
 
-That expected linear relationship does not hold for `album_popularity` though. Instead, there is a clear delineation of playlist inclusion for both very popular albums and very unpopular albums. We posit that this is due to the phenomenon of one-hit wonders, whereby an album might be panned by critics and music fans overall but it was listened to and reviewed because it had one or two very popular songs. Those individual songs will be included in playlists, thanks to the flexibility of streaming services, even though the album overall remains unpopular. It is the middle range of albums, without any hit songs that are just ok, that are most at risk of not being included in playlists.
+That expected linear relationship does not hold for `album_popularity` though. Instead, there is a clear delineation of playlist inclusion for both very popular albums and very unpopular albums. We posit that this is due to the phenomenon of one-hit wonders, whereby an album might be panned by critics and music fans overall but it was listened to and reviewed because it had one or two very popular songs. Those individual songs will be included in playlists, thanks to the flexibility of streaming services, even though the album overall remains unpopular. It is the middle range of albums, with no hit songs and an average rating, that are most at risk of not being included in playlists.
 
     Time elapsed: 5.503 seconds
 
@@ -187,17 +187,7 @@ The final continuous musical feature we explored was `tempo`. Our hypothesis was
 
 ## How have song features changed over time?
 
-Moving on from exploring feature relationships, we next explored how these features have been changing over time for songs released in different years. We derived a new `release_year` column from the `album_release_date` column and show a preview below. We filter to all songs released between 1950 and 2017 to ensure sufficient data for our chart and show the distribution of release years currently in Spotify's library below.
-
-    song_id
-    0         1993
-    159583    1993
-    271702    1993
-    445190    1993
-    626275    1993
-    Name: release_year, dtype: object
-    Time elapsed: 10.914 seconds
-
+Moving on from exploring feature relationships, we next explored how these features have been changing over time for songs released in different years. We derived a new `release_year` column from the `album_release_date` column. We filter to all songs released between 1950 and 2017 to ensure sufficient data for our chart and show the distribution of release years currently in Spotify's library below.
 
     Time elapsed: 0.411 seconds
 
@@ -245,4 +235,4 @@ Lastly, we wanted to explore popular musical keys for songs as well as a sample 
 
 #### What did our exploration teach us?
 
-There exist relationships amongst song features and between features and playlist inclusion that suggest a modeling approach would have something by which it could identify popular and similar songs. There are enough distinctions in musical features like `tempo` or `danceability` to suggest distinct types of songs. The majority of features appear unrelated to each other, with no visually discernible relationships and partially because of that, we wanted to apply techniques to reduce the number of dimensions used to the important ones.
+There exist relationships among song features and between features and playlist inclusion that suggest a modeling approach would have something by which it could identify popular and similar songs. There are enough distinctions in musical features like `tempo` or `danceability` to suggest distinct types of songs. The majority of features appear unrelated to each other, with no visually discernible relationships and partially because of that, we wanted to apply techniques to reduce the number of dimensions used to the important ones.

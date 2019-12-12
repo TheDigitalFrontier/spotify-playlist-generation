@@ -1,4 +1,4 @@
-## Welcome to the Digital Frontier 
+## Generating a Spotify Playlist
 
 <a href="https://wfseaton.github.io/TheDigitalFrontier/">Home Page</a> - 
 <a href="https://wfseaton.github.io/TheDigitalFrontier/data_preparation.html">Data Preparation</a> - 
@@ -17,7 +17,7 @@ After dimension reductionality and testing multiple different clustering mechani
 
 We focused on using continuous features of each song (tempo, danceability, etc.) passed through dimensionality reduction and grouped using K-Means relative clustering. After arriving at a set of workable clusters for song selection, we then seed our generated playlist with a handful of manually selected songs. Our algorithm will take each seed song, identify the cluster that it belongs to and select a song from that cluster using a representative derived distance metric. It will repeat this until the desired song count has been reached.
 
-Overview of playlist generation model:
+#### Overview of playlist generation model:
 
 - Using an autoencoder, we reduce dimensionality of song characteristics (tempo, valence, etc.).
 
@@ -30,7 +30,7 @@ Overview of playlist generation model:
 - Finally, we generate the playlist with songs that are most similar (least cosine distance) to the seed songs.
 
 
-Key notes:
+#### Key notes:
 
 - We did not use any artist or album information in the final model. Our model generated clusters solely based on song characteristics we pulled from the Spotify API.
 
@@ -40,34 +40,16 @@ Key notes:
 
 - The values that we clustered on are outputs from the autoencoder. The magnitude of these are difficult to interpret and as such as do not have much meaning. As such, we chose to use cosine distances rather than Euclidean distances.
 
-In order to test our playlist, we wanted to see, when provided with a few seed songs from a specific existing playlist, whether our generation algorithm would produce a playlist close to the seed playlist.
-
-**Import model and its predictions for backup and consistency**
-
-
-
-
-    [125250,
-     787744,
-     340039,
-     603984,
-     461894,
-     653897,
-     881533,
-     894661,
-     810569,
-     49614,
-     776037,
-     356319]
-
-
-
 
 
 
     array([12,  0, 12, 12, 12,  5,  5,  0,  6, 12, 12, 12], dtype=int32)
 
 
+
+### Our first generated playlist
+
+In order to test our playlist, we wanted to see, when provided with a few seed songs from a specific existing playlist, whether our generation algorithm would produce a playlist close to the seed playlist. From our generation algorithm, we then produced the below playlist (10 random songs shown out of 100).
 
 
 
@@ -385,10 +367,10 @@ In order to test our playlist, we wanted to see, when provided with a few seed s
 
 
 
-Manually reviewing 10 songs from our generated playlist shows some artist overlap for Rihanna and Mayday Parade, indicating that our clustering algorithm is finding stylistically-alike songs though potentially overfitting to songs by the exact same artist. To further assess the clustering of the whole playlist, we charted our generated playlist in t-SNE space.
+Manually reviewing 10 songs from our generated playlist shows artist overlap for Rihanna and Mayday Parade, indicating that our clustering algorithm is actually identifying the same artist extremely well from just 5 musical features! To further assess the clustering of the whole playlist, we charted our generated playlist in t-SNE space.
 
 
-![png](playlist_generation_files/playlist_generation_12_0.png)
+![png](playlist_generation_files/playlist_generation_11_0.png)
 
 
 Our t-SNE graph shows the seed songs that were selected from the manually-curated playlist as the largest bubbles. All songs in the original manual playlist are highlighted in gold. Our generated songs that were not in the original playlist are colored according to the cluster that our algorithm assigns them to. For our generated playlist, we see that a fifth of songs overlap with the original seed playlist but beyond that we have fairly solid generated results within three clusters, all of which are approximately similar in t-SNE space location as well.
@@ -402,7 +384,7 @@ We tried this on several randomly selected playlists and saw some encouraging re
 One area of further study we would like to pursue would be researching the balance between overlap percentage and cluster proliferation to understand if our generation algorithm sees an exclusive or dependent relationship between these two optimizations.
 
 
-![png](playlist_generation_files/playlist_generation_17_0.png)
+![png](playlist_generation_files/playlist_generation_16_0.png)
 
 
 Visual analysis of our cold-start generated playlists showed encouraging results but we wanted to layer on a more quantitative measure of success as well. To do this, we continue to rely on the assumption that manually-curated playlists can be considered "high quality" due to the understanding that someone spent the time and effort to put songs that they wanted to listen to together.
@@ -414,7 +396,7 @@ One critical design choice we made is that of setting a minimum threshold of son
 We present another randomly selected playlist as an example of our distance quality metric.
 
 
-![png](playlist_generation_files/playlist_generation_22_0.png)
+![png](playlist_generation_files/playlist_generation_21_0.png)
 
 
 #### Calculate distance to human-created playlists and manually inspect the closest-matching
