@@ -12,7 +12,7 @@
 --------------------------------------------------------------------------------
 <br>
 <p><center>
-#### Thanks for an amazing semester and see you in 2020!
+Thanks for an amazing semester and see you in 2020!
 </center></p>
 <br>
 <i><center>
