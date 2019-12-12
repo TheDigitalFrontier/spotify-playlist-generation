@@ -1,4 +1,4 @@
-## Welcome to the Digital Frontier 
+## Generating a Spotify Playlist
 
 <a href="https://wfseaton.github.io/TheDigitalFrontier/">Home Page</a> - 
 <a href="https://wfseaton.github.io/TheDigitalFrontier/data_preparation.html">Data Preparation</a> - 
@@ -41,7 +41,7 @@ K-Means requires the manual specification of a target number of clusters, which 
 
 For our final model, we take the 5 variables resulting from the autoencoder dimension reduction technique to identify 15 clusters using K-Means.
 
-We list here the number of songs belonging to each cluster.
+We list here the number of songs belonging to each cluster to provide a numerical assessment of size in addition to the visual graph.
 
     0 : 17434
     1 : 7447
@@ -72,7 +72,7 @@ K-Means provides us with the provided number of clusters but few of these appear
 
 HDBSCAN is a library of software tools that implements a clustering algorithm developed by [Campello, Moulavi, and Sander](http://link.springer.com/chapter/10.1007%2F978-3-642-37456-2_14). It is a powerful step above K-Means in that it does not require you to specify the number of clusters, but instead analyzes density distribution, assumes a certain level of noise, and returns only clusters of data that reach a certain threshold of density. Given the diversity of song styles, our hypothesis was that there would be a large number of "noise" songs, songs that don't fit into an identifiable category and that are best ignored when generating a playlist with a desired theme. What should remain after HDBSCAN are clusters of songs that are similar enough to have an enjoyable thematic experience in our new playlist.
 
-To better understand the HDBSCAN algorithm, let's explore its process step-by-step. First, HDBSCAN estimates density using distance to *k*th nearest neighbors, referred to in the literature as *core distance*. A second distance metric, referred to as *mutual reachability distance*, is calculated that spreads sparse points farther away while leaving denser points relatively untouched.
+To better understand the HDBSCAN algorithm, let's explore its process step-by-step. First, HDBSCAN estimates density using distance to *k*th nearest neighbors for each point, referred to in the literature as *core distance*. A second distance metric, referred to as *mutual reachability distance*, is calculated between every pair of points using *Core distance* as an input, which serves to spread sparse points farther away while leaving denser points relatively untouched. HDBSCAN considers the data of distance metrics as a weighted graph with the data point as a vertex and an edge weighted equally to the mutual reachability distance. The algorithm then takes a threshold value, starting high and steadily lowering, that begins to drop edges with weights (i.e. distances) above that threshold. As the threshold continues to lower, the algorithm continues to drop edges into the "noise" categorization. HDBSCAN defines a stopping mechanism using a "minimum spanning tree", which doubles as a efficiency gain technique. From this tree, it produces a hierarchy of connected components by sorting trees by distance and then condenses this clustered tree further by treating cluster splits as "losing points" from a primary cluster instead of as two new clusters being created. This allows HDBSCAN to maintain its high absolute bar for what a cluster is. If a "new cluster" has fewer points than the minimum required cluster size, it is considered "lost points to noise" instead of a new cluster. Lastly, it extracts remaining clusters and returns them for labeling. HDBSCAN for our data returns 18 clusters.
 
     Number of clusters: 18
 

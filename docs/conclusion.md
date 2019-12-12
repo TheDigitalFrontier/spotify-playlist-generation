@@ -1,4 +1,4 @@
-## Welcome to the Digital Frontier 
+## Generating a Spotify Playlist
 
 <a href="https://wfseaton.github.io/TheDigitalFrontier/">Home Page</a> - 
 <a href="https://wfseaton.github.io/TheDigitalFrontier/data_preparation.html">Data Preparation</a> - 
@@ -15,7 +15,7 @@
 
 We started off with the goal of generating a thematic and enjoyable playlist from a cold start, meaning having only a few seed songs that we can derive a theme from. Our starting data was a large sample of manually curated playlists and the songs in each. From there, we were able to leverage the Spotify API to enrich our song metadata with features about the inherent nature of each song, including features like tempo, danceability, variance and more. This metadata meant that we could begin to explore the defining characteristics of a song and how families of songs related to each other.
 
-To do this, we took our enriched continuous features and expanded our categorical features to the fullest extent, applying dimensionality reduction techniques to try to distill what about each song proved most important in defining families and relationships. ...... todo add detail
+To do this, we took our enriched continuous features and expanded our categorical features to the fullest extent, applying dimensionality reduction techniques to try to distill what about each song proved most important in defining families and relationships. We tested several techniques trying to successfully expand and use categoricals for artist and album but ultimately came to the conclusion that applying an AutoEncoder neural network to just our continuous features was the best path forward.
 
 Songs with dimensions reduced to the remaining critical features were then passed through multiple variations of clustering techniques to see which was better able to separate related families of songs. HDBSCAN, the more complex and high-powered algorithm, failed to produce a sufficient number of distinct clusters for use in our recommendation algorithm because it considered "noise" as a first-order principle and most songs are similar enough in their core musical attributes to prevent styles rising above the density threshold. K-Means proved more practically useful for recommendation as it forced separation to a manually defined number of clusters and assessed song similarity on a relative basis, a technique that aligns better to song styles. Projecting both clustering techniques on a t-SNE graph enabled a form of standardized assessment, though it complicated interpretability by reducing the number of dimensions the algorithms were considering to just the two required for plotting.
 
@@ -24,6 +24,10 @@ With our important features identified and the most effective clustering techniq
 In order to improve upon our visual analysis, we invented a playlist similarity coefficient defined by a distance metric between generated playlists and any manually curated one. We used this similarity coefficient to compare generated playlists to curated ones and saw examples of the closest playlists having similar artists and genres to our generated ones. We believe this shows that our model is succeeding in generating thematic playlists from a cold start and the musical features of the songs provided.
 
 # Further Development
+
+Our first improvement would be to change the song selection mechanism from an identified cluster during generation. Currently, we select songs from the same cluster as our seed songs, based on a distance score calculated from just a randomly selected seed song. Instead, we would like to expand the list of songs we randomly select from to include the songs we are adding during the generation process. This would ensure a little more variety of selection because we wouldn't be just calculating distance from the seed songs, but from the seed song plus the songs already added.
+
+Our second improvement would be to better identify a unique genre for each song or album and deploy that as a feature. Genre classifications vary but are a human's manual assessment for the type of song. Including this as a feature would be complicated because we would need to define a method to select a "primary genre" from the provided list as well as generate a genre for the majority of songs without one but could provide a great leap in cluster identification.
 
 One insight that cannot be ignored is that most songs can not be differentiated into distinct families by their musical features on an absolute basis. Only a few clusters, all small in size, passed the density threshold of HDBSCAN to be identified. This suggests that further improvement and personalization based on inherent qualities of each song are unlikely to come.
 
