@@ -1,13 +1,13 @@
 ## Generating a Spotify Playlist
 
-<a href="https://wfseaton.github.io/TheDigitalFrontier/">Home Page</a> - 
-<a href="https://wfseaton.github.io/TheDigitalFrontier/data_preparation">Data Preparation</a> - 
-<a href="https://wfseaton.github.io/TheDigitalFrontier/data_exploration">Data Exploration</a> - 
-<a href="https://wfseaton.github.io/TheDigitalFrontier/dimensionality_reduction">Dimensionality Reduction</a> - 
-<a href="https://wfseaton.github.io/TheDigitalFrontier/clustering_techniques">Clustering Techniques</a> - 
-<a href="https://wfseaton.github.io/TheDigitalFrontier/playlist_generation"><b>Playlist Generation</b></a> - 
-<a href="https://wfseaton.github.io/TheDigitalFrontier/conclusion">Conclusion</a> - 
-<a href="https://wfseaton.github.io/TheDigitalFrontier/authors_gift">Authors' Gift</a>
+<a href="https://johannes-kk.github.io/TheDigitalFrontier/">Home Page</a> - 
+<a href="https://johannes-kk.github.io/TheDigitalFrontier/data_preparation">Data Preparation</a> - 
+<a href="https://johannes-kk.github.io/TheDigitalFrontier/data_exploration">Data Exploration</a> - 
+<a href="https://johannes-kk.github.io/TheDigitalFrontier/dimensionality_reduction">Dimensionality Reduction</a> - 
+<a href="https://johannes-kk.github.io/TheDigitalFrontier/clustering_techniques">Clustering Techniques</a> - 
+<a href="https://johannes-kk.github.io/TheDigitalFrontier/playlist_generation"><b>Playlist Generation</b></a> - 
+<a href="https://johannes-kk.github.io/TheDigitalFrontier/conclusion">Conclusion</a> - 
+<a href="https://johannes-kk.github.io/TheDigitalFrontier/authors_gift">Authors' Gift</a>
 
 -------------------------------------------------------------------------------------------------------------------
 
