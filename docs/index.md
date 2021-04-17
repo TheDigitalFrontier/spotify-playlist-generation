@@ -1,13 +1,13 @@
 ## Generating a Spotify Playlist
 
-<a href="https://johannes-kk.github.io/TheDigitalFrontier/">Home Page</a> -
-<a href="https://johannes-kk.github.io/TheDigitalFrontier/data_preparation">Data Preparation</a> -
-<a href="https://johannes-kk.github.io/TheDigitalFrontier/data_exploration">Data Exploration</a> -
-<a href="https://johannes-kk.github.io/TheDigitalFrontier/dimensionality_reduction">Dimensionality Reduction</a> -
-<a href="https://johannes-kk.github.io/TheDigitalFrontier/clustering_techniques">Clustering Techniques</a> -
-<a href="https://johannes-kk.github.io/TheDigitalFrontier/playlist_generation">Playlist Generation</a> -
-<a href="https://johannes-kk.github.io/TheDigitalFrontier/conclusion">Conclusion and Future Work</a> -
-<a href="https://johannes-kk.github.io/TheDigitalFrontier/authors_gift">Authors' Gift</a>
+<a href="https://thedigitalfrontier.github.io/spotify-playlist-generation/">Home Page</a> -
+<a href="https://thedigitalfrontier.github.io/spotify-playlist-generation/data_preparation">Data Preparation</a> -
+<a href="https://thedigitalfrontier.github.io/spotify-playlist-generation/data_exploration">Data Exploration</a> -
+<a href="https://thedigitalfrontier.github.io/spotify-playlist-generation/dimensionality_reduction">Dimensionality Reduction</a> -
+<a href="https://thedigitalfrontier.github.io/spotify-playlist-generation/clustering_techniques">Clustering Techniques</a> -
+<a href="https://thedigitalfrontier.github.io/spotify-playlist-generation/playlist_generation">Playlist Generation</a> -
+<a href="https://thedigitalfrontier.github.io/spotify-playlist-generation/conclusion">Conclusion and Future Work</a> -
+<a href="https://thedigitalfrontier.github.io/spotify-playlist-generation/authors_gift">Authors' Gift</a>
 
 --------------------------------------------------------------------------------
 
