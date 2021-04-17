@@ -6,7 +6,7 @@
 <a href="https://thedigitalfrontier.github.io/spotify-playlist-generation/dimensionality_reduction">Dimensionality Reduction</a> -
 <a href="https://thedigitalfrontier.github.io/spotify-playlist-generation/clustering_techniques">Clustering Techniques</a> -
 <a href="https://thedigitalfrontier.github.io/spotify-playlist-generation/playlist_generation">Playlist Generation</a> -
-<a href="https://thedigitalfrontier.github.io/spotify-playlist-generation/conclusion">Conclusion and Future Work</a> -
+<a href="https://thedigitalfrontier.github.io/spotify-playlist-generation/conclusion">Conclusion</a> -
 <a href="https://thedigitalfrontier.github.io/spotify-playlist-generation/authors_gift">Authors' Gift</a>
 
 --------------------------------------------------------------------------------
